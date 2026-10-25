@@ -1,3 +1,5 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Domy předků</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -121,7 +123,21 @@ const map = L.map("map", {zoomSnap: 0.5, attributionControl: true, maxZoom: 19})
 map.attributionControl.setPrefix(false).addAttribution("Podklad: ČÚZK – on-line (ZTM, Ortofoto ČR), CC BY 4.0 · výřezy indikačních skic: Národní archiv / MZA, ČÚZK – Archiv");
 let src = "ztm";
 const over = D.podklady.map(p => ({...p, layer: null}));
+// Živé dlaždice ČÚZK (otevřená služba, „ČÚZK – on-line“): lokálně a na běžném webu fungují a dávají ostrou mapu
+// bez švů. Kde je stránka nesmí načítat (např. zveřejněná stránka na claude.ai), použijí se předem slepené obrázky.
+const TILE = s => `https://ags.cuzk.gov.cz/arcgis1/rest/services/${s === "orto" ? "ORTOFOTO_WM" : "ZTM_WM"}/MapServer/tile/{z}/{y}/{x}`;
+let live = null;
+function zkusZive() {
+  const img = new Image();
+  img.onload = () => {
+    for (const o of over) if (o.layer) { o.layer.remove(); o.layer = null; }
+    live = L.tileLayer(TILE(src), {maxZoom: 19, maxNativeZoom: 19, attribution: ""}).addTo(map);
+  };
+  img.onerror = () => {};  // blokováno – zůstávají slepené podklady
+  img.src = TILE("ztm").replace("{z}", "12").replace("{y}", "1388").replace("{x}", "2235");
+}
 function syncOverlays() {
+  if (live) return;
   const z = map.getZoom(), vb = map.getBounds();
   for (const o of over) {
     const b = L.latLngBounds(o.bounds);
@@ -135,6 +151,7 @@ const DOMY_OD = 13;  // od tohoto přiblížení jednotlivé domy, pod ním jedn
 function setSrc(s) {
   src = s;
   for (const o of over) if (o.layer) o.layer.setUrl(`podklady/${o.img}_${src}.jpg`);
+  if (live) live.setUrl(TILE(src));
   document.getElementById("b-ztm").setAttribute("aria-pressed", s === "ztm");
   document.getElementById("b-orto").setAttribute("aria-pressed", s === "orto");
 }
@@ -266,4 +283,5 @@ const okoli = over.find(o => o.img === "prehled-okoli");
 const near = items.filter(i => i.m && okoli && L.latLngBounds(okoli.bounds).contains(i.m.getLatLng())).map(i => i.m.getLatLng());
 map.fitBounds(L.latLngBounds(near.length ? near : items.filter(i => i.m).map(i => i.m.getLatLng())), {padding: [30, 30]});
 syncOverlays();
+zkusZive();
 </script>
