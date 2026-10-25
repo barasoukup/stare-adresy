@@ -1,0 +1,12 @@
+{
+  "name": "stare-adresy",
+  "description": "Geokodér starých adres z matrik – kde stál dům předků podle stabilního katastru",
+  "owner": { "name": "barasoukup" },
+  "plugins": [
+    {
+      "name": "stare-adresy",
+      "source": "./plugins/stare-adresy",
+      "description": "Najde, kde stál dům „obec + číslo popisné“ z matrik 18.–19. století podle indikačních skic a císařských otisků stabilního katastru (ČÚZK) a porovná to s dnešním katastrem; výstupem je mapa s výřezy skic."
+    }
+  ]
+}

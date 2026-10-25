@@ -1,0 +1,314 @@
+#!/usr/bin/env python3
+"""Seznam starých adres (obec + č.p.) a jejich poloha – soubor adresy.json, doplnění souřadnic a mapa.
+
+Použití:
+  adresy.py nova <soubor.json>                 založí prázdný seznam (když neexistuje)
+  adresy.py pridej <soubor.json> klíč=hodnota … přidá / upraví adresu, např.
+        id=svinna-46 obec=Svinná cp=46 ku_kod=671703 rok=1847 osoby="Jan Novák (1847)"
+        stp=4 skica=CHR473018390 skica_cp=46        (co jsi přečetl na indikační skice; bez skica_cp nejvýš B)
+        sjtsk=-605511,-1081530                        (bod z císařského otisku v aplikaci ČÚZK Archiv)
+        sjtsk=… bod=kotvy                              (bod spočtený z kotev skici – kotvy.py)
+        lat=49.89 lon=16.38 metoda=ručně              (ruční poloha)
+        dnesni_cp=neplati                              (dnešní dům s tímto č.p. prokazatelně není ten starý)
+  adresy.py dopln <soubor.json> [--znovu]       dopočítá polohu všem adresám bez souřadnic (--znovu: všem)
+  adresy.py vypis <soubor.json>                 přehled s jistotou
+  adresy.py mapa <soubor.json> [mapa.html]      mapa (Leaflet) + GeoJSON vedle souboru
+
+Jistota:
+  A  č.p. přečtené na skice (skica_cp) a jeho stavební parcela dnes nese stejné č.p. (nebo ručně ověřeno)
+  B  poloha ze skici / otisku / kotev, ale dům dnes zanikl, č.p. je jinde, nebo č.p. na skice nepřečteno
+  C  jen dnešní č.p. (bez skici – číslo se mohlo od 19. století změnit)
+  D  jen obec / katastrální území
+"""
+import html, json, os, sys
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))  # -I nepřidává složku skriptu
+import ruian  # noqa: E402
+
+for _s in (sys.stdout, sys.stderr):
+    if hasattr(_s, "reconfigure"):
+        _s.reconfigure(encoding="utf-8", errors="replace")
+
+SKICA_URL = "https://ags.cuzk.gov.cz/archiv/openmap.html?typ=skicic&idrastru={}"
+CISLA = {"cp", "ku_kod", "rok", "skica_rok", "skica_cp"}
+DESETINNA = {"lat", "lon"}
+
+
+def load(path):
+    return json.load(open(path, encoding="utf-8")) if os.path.exists(path) else []
+
+
+def save(path, data):
+    with open(path, "w", encoding="utf-8") as f:
+        json.dump(data, f, ensure_ascii=False, indent=1)
+
+
+def pridej(path, pairs):
+    data = load(path)
+    kv = {}
+    for p in pairs:
+        k, _, v = p.partition("=")
+        if k in CISLA and v.strip().lstrip("-").isdigit():
+            v = int(v)
+        elif k in DESETINNA:
+            v = float(v)
+        elif k == "sjtsk":
+            v = [float(x) for x in v.split(",")]
+        kv[k] = v
+    if "id" not in kv:
+        kv["id"] = f"{kv.get('obec', 'x')}-{kv.get('cp', len(data) + 1)}".lower().replace(" ", "-")
+    old = next((e for e in data if e["id"] == kv["id"]), None)
+    if old:
+        if {"stp", "sjtsk", "cp", "ku_kod"} & kv.keys() and not {"lat", "lon"} & kv.keys():
+            for k in ("lat", "lon", "metoda", "jistota", "dnes", "zjisteni"):
+                old.pop(k, None)  # změnil se podklad → polohu spočítat znovu
+        old.update(kv)
+    else:
+        data.append(kv)
+    save(path, data)
+    print(("upraveno" if old else "přidáno") + f": {kv['id']}")
+
+
+def _dnes(adresy, cp):
+    names = [a["adresa"] for a in adresy]
+    same = any(a["cp"] == cp for a in adresy) if cp else None
+    return {"adresy": names, "stejne_cp": same}
+
+
+def _dnes_cp(ku, cp, obec):
+    """Dnešní adresní místo s č.p. v k.ú.; při více částech obce dá přednost té, jejíž jméno je v adrese."""
+    dn = ruian.cp(ku, cp)
+    if obec:
+        jm = obec.split(" (")[0].lower()
+        dn.sort(key=lambda a: jm not in a["adresa"].lower())
+    return dn
+
+
+def _precteno(e):
+    """Je č.p. na skice přečtené? (skica_cp = číslo z budovy nebo z „N° X“ na zahradě)"""
+    return e.get("skica_cp") is not None and str(e["skica_cp"]) == str(e.get("cp"))
+
+
+def _porovnej(e, lat, lon, notes):
+    """Kde je dnešní dům se stejným č.p.? Uloží ho do e['dnes'] (pro čáru v mapě) a vrátí vzdálenost."""
+    cp, ku = e.get("cp"), e.get("ku_kod")
+    if not (cp and ku):
+        return None
+    dn = _dnes_cp(ku, cp, e.get("obec"))
+    if not dn:
+        notes.append(f"dnes v k.ú. č.p. {cp} není")
+        return None
+    d = ruian.dist_m(lat, lon, dn[0]["lat"], dn[0]["lon"])
+    e["dnes"].update(cp_adresa=dn[0]["adresa"], cp_lat=dn[0]["lat"], cp_lon=dn[0]["lon"], cp_vzdalenost_m=round(d))
+    notes.append(f"dnešní č.p. {cp} je {d:.0f} m odtud")
+    return d
+
+
+def urci(e):
+    """Doplní e['lat'], e['lon'], metoda, jistota, dnes, zjisteni. Vrací krátký popis."""
+    cp, ku = e.get("cp"), e.get("ku_kod")
+    notes = []
+    if e.get("lat") is not None and e.get("metoda"):
+        return "ponechána ruční poloha"
+    if e.get("sjtsk"):  # bod z císařského otisku, nebo spočtený z kotev skici (bod=kotvy)
+        zdroj = "kotvy" if e.get("bod") == "kotvy" else "otisk"
+        lat, lon = ruian.sjtsk_to_wgs(*e["sjtsk"])
+        b = ruian.bod(lat, lon)
+        par = b["parcela"][0] if b["parcela"] else None
+        e.update(lat=lat, lon=lon, metoda=zdroj, jistota="B")
+        e["dnes"] = _dnes(par["adresy"] if par else [], cp)
+        e["dnes"]["parcela"] = (("st. " if par["stavebni"] else "p.č. ") + par["st"]) if par else None
+        if e.get("presnost_m"):
+            notes.append(f"přesnost {'kotev' if zdroj == 'kotvy' else 'otisku'} asi {e['presnost_m']} m")
+        if e["dnes"]["stejne_cp"] and _precteno(e):
+            e["jistota"] = "A"
+        elif not e["dnes"]["stejne_cp"]:
+            d = _porovnej(e, lat, lon, notes)
+            if d is not None and d <= 30 and _precteno(e):
+                e["jistota"] = "A"
+                notes.append("dnešní dům se stejným č.p. stojí na témže místě")
+        if not _precteno(e):
+            notes.append("č.p. na skice nepřečteno")
+        e["zjisteni"] = notes
+        kde = f"{e['dnes']['parcela']}, dnes {', '.join(e['dnes']['adresy']) or 'bez adresy'}"
+        return "; ".join([f"bod ({zdroj}) → {kde}"] + notes) + f" → {e['jistota']}"
+    if e.get("stp") and ku:
+        res = ruian.st(ku, e["stp"])  # u rozdělené parcely (st. 85/1, 85/2) více dílů
+        if res:
+            hit = next(((p, a) for p in res for a in p["adresy"] if a["cp"] == cp), None)
+            p = hit[0] if hit else res[0]
+            pt = hit[1] if hit else p
+            e.update(lat=pt["lat"], lon=pt["lon"], metoda="stp")
+            e["dnes"] = _dnes([a for q in res for a in q["adresy"]], cp)
+            e["dnes"]["parcela"] = ", ".join(f"st. {q['st']}" for q in res)
+            if hit:
+                e["jistota"] = "A"
+                notes.append(f"st. {p['st']} dnes nese č.p. {cp}")
+                if len(res) > 1:
+                    notes.append("parcela je dnes rozdělená")
+            else:
+                e["jistota"] = "B"
+                nese = ("nese " + ", ".join(e["dnes"]["adresy"])) if e["dnes"]["adresy"] else "je bez adresy"
+                notes.append(f"st. {e['stp']} dnes existuje, ale {nese}")
+                d = _porovnej(e, e["lat"], e["lon"], notes)
+                if d is not None and d <= 30:  # tentýž statek, adresní bod je na novém dílu parcely
+                    e["jistota"] = "A"
+                    notes.append("tentýž statek – číslo zůstalo, parcela se dělila")
+            if not _precteno(e):  # bez přečteného č.p. je shoda jen nepřímá
+                e["jistota"] = "B"
+                notes.append("č.p. na skice nepřečteno – poloha jen podle stavební parcely")
+            elif e["jistota"] == "B":
+                notes.append("ověř tvar a sousedy proti skice")
+            e["zjisteni"] = notes
+            return "; ".join(notes) + f" → {e['jistota']}"
+        notes.append(f"st. {e['stp']} dnes neexistuje (přečíslováno / zbořeno) – najdi dům na císařském otisku (sjtsk=…)")
+    if cp and ku and e.get("dnesni_cp") == "neplati":
+        notes.append("dnešní č.p. je jiný dům (ověřeno) – nepoužito")
+    elif cp and ku:
+        dn = _dnes_cp(ku, cp, e.get("obec"))
+        if dn:
+            e.update(lat=dn[0]["lat"], lon=dn[0]["lon"], metoda="dnesni_cp", jistota="C",
+                     dnes={"adresy": [a["adresa"] for a in dn], "stejne_cp": True})
+            if len(dn) > 1:
+                notes.append(f"v k.ú. je víc adres s tímto č.p. – vybráno {dn[0]['adresa']}")
+            par = ruian.parcela_pod(dn[0]["lat"], dn[0]["lon"])
+            e["dnes"]["parcela"] = par
+            if par and par.startswith("p.č."):
+                notes.append(f"dnešní dům stojí na pozemkové parcele ({par}) – vznikl nejspíš až po stabilním katastru, "
+                             "starý dům stál jinde")
+            elif par:
+                notes.append(f"dnešní dům stojí na {par} – ověř na skice, zda tam ~1840 stála budova se stejnou st. parcelou "
+                             "(vysoké číslo st. parcely = spíš novější stavba)")
+            e["zjisteni"] = notes
+            return "; ".join(notes + ["jen podle dnešního č.p. → C"])
+        notes.append(f"dnes v k.ú. č.p. {cp} není")
+    if ku:
+        k = ruian.ku_geom(ku)
+        lat, lon = ruian.centroid(k["geometry"]["rings"])
+        e.update(lat=lat, lon=lon, metoda="obec", jistota="D", dnes={"adresy": []})
+        e["zjisteni"] = notes
+        return "; ".join(notes + ["jen střed katastrálního území → D"])
+    return "chybí ku_kod (zjisti: ruian.py ku \"Obec\")"
+
+
+def dopln(path, znovu=False):
+    data = load(path)
+    for e in data:
+        if e.get("lat") is not None and not znovu:
+            continue
+        if znovu and e.get("metoda") not in ("ručně",):
+            for k in ("lat", "lon", "metoda", "jistota", "dnes", "zjisteni"):
+                e.pop(k, None)
+        try:
+            msg = urci(e)
+        except Exception as ex:  # síť / služba – ať se uloží aspoň zbytek
+            msg = f"CHYBA: {ex}"
+        print(f"{e['id']:<24} {msg}")
+        save(path, data)
+
+
+def vypis(path):
+    for e in load(path):
+        loc = f"{e['lat']:.6f}, {e['lon']:.6f}" if e.get("lat") is not None else "–"
+        dnes = ", ".join((e.get("dnes") or {}).get("adresy", [])) or "–"
+        print(f"{e.get('jistota', '?')}  {e['id']:<24} {e.get('obec', '')} č.p. {e.get('cp', '?'):<4} "
+              f"{loc:<24} {e.get('metoda', ''):<10} dnes: {dnes}")
+
+
+def geojson(data):
+    feats = []
+    for e in data:
+        if e.get("lat") is None:
+            continue
+        props = {k: v for k, v in e.items() if k not in ("lat", "lon")}
+        feats.append({"type": "Feature", "geometry": {"type": "Point", "coordinates": [e["lon"], e["lat"]]}, "properties": props})
+    return {"type": "FeatureCollection", "features": feats}
+
+
+MAP_HTML = """<!doctype html>
+<html lang="cs"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>__TITLE__</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<style>
+ html,body,#map{height:100%;margin:0} body{font:14px/1.4 system-ui,sans-serif}
+ .leg{background:#fff;padding:6px 10px;border-radius:6px;box-shadow:0 1px 4px #0003}
+ .leg i{display:inline-block;width:11px;height:11px;border-radius:50%;margin-right:5px;vertical-align:-1px}
+ .pop h3{margin:0 0 4px;font-size:15px} .pop small{color:#555} .pop img{max-width:260px;display:block;margin-top:6px}
+</style></head><body><div id="map"></div>
+<script>
+const DATA = __DATA__;
+const BARVA = {A:'#1a7f37',B:'#d4a017',C:'#d9480f',D:'#868e96'};
+const POPIS = {A:'jistá poloha (skica = dnešní parcela i č.p.)',B:'podle skici / otisku',C:'jen dnešní č.p.',D:'jen obec'};
+const METODA = {stp:'stavební parcela ze skici',otisk:'bod na císařském otisku',dnesni_cp:'dnešní č.p.',obec:'střed obce','ručně':'ručně'};
+const osm = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,attribution:'© OpenStreetMap'});
+const orto = L.tileLayer('https://ags.cuzk.gov.cz/arcgis1/rest/services/ORTOFOTO_WM/MapServer/tile/{z}/{y}/{x}',{maxZoom:20,attribution:'© ČÚZK'});
+const ztm = L.tileLayer('https://ags.cuzk.gov.cz/arcgis1/rest/services/ZTM_WM/MapServer/tile/{z}/{y}/{x}',{maxZoom:18,attribution:'© ČÚZK'});
+const kn = L.tileLayer.wms('https://services.cuzk.gov.cz/wms/local-km-wms.asp',{layers:'KN',format:'image/png',transparent:true,maxZoom:20,attribution:'katastr © ČÚZK'});
+const map = L.map('map',{layers:[ztm]});
+L.control.layers({'Základní mapa ČÚZK':ztm,'Letecký snímek':orto,'OpenStreetMap':osm},{'Dnešní katastr (parcely)':kn}).addTo(map);
+const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const pts = [];
+for (const e of DATA) {
+  if (e.lat == null) continue;
+  const j = e.jistota || 'D';
+  const m = L.circleMarker([e.lat, e.lon], {radius: 8, color: '#fff', weight: 2, fillColor: BARVA[j], fillOpacity: .95}).addTo(map);
+  let h = `<div class="pop"><h3>${esc(e.obec)} č.p. ${esc(e.cp)}</h3>`;
+  if (e.rok) h += `<div>v matrice: ${esc(e.rok)}</div>`;
+  if (e.osoby) h += `<div>${esc(e.osoby)}</div>`;
+  h += `<small>${esc(POPIS[j])} · ${esc(METODA[e.metoda] || e.metoda)}`;
+  if (e.stp) h += ` · na skici st. p. ${esc(e.stp)}`;
+  h += `</small>`;
+  if (e.dnes && e.dnes.adresy && e.dnes.adresy.length) h += `<div><small>dnes: ${esc(e.dnes.adresy.join(', '))}</small></div>`;
+  if (e.zjisteni && e.zjisteni.length) h += `<div><small>${esc(e.zjisteni.join('; '))}</small></div>`;
+  if (e.poznamka) h += `<div>${esc(e.poznamka)}</div>`;
+  if (e.vyrez) h += `<img src="${esc(e.vyrez)}" alt="výřez indikační skici">`;
+  if (e.skica) h += `<div><a href="https://ags.cuzk.gov.cz/archiv/openmap.html?typ=skicic&idrastru=${encodeURIComponent(e.skica)}" target="_blank" rel="noopener">indikační skica (ČÚZK Archiv)</a></div>`;
+  m.bindPopup(h + '</div>');
+  m.bindTooltip(`${esc(e.obec)} ${esc(e.cp)}`);
+  pts.push([e.lat, e.lon]);
+}
+if (pts.length) map.fitBounds(pts, {padding: [40, 40], maxZoom: 17}); else map.setView([49.8, 15.5], 7);
+const leg = L.control({position: 'bottomleft'});
+leg.onAdd = () => { const d = L.DomUtil.create('div', 'leg'); d.innerHTML = Object.keys(POPIS).map(k => `<div><i style="background:${BARVA[k]}"></i>${k} – ${POPIS[k]}</div>`).join(''); return d; };
+leg.addTo(map);
+</script></body></html>
+"""
+
+
+def mapa(path, out=None):
+    data = load(path)
+    out = out or os.path.splitext(path)[0] + "_mapa.html"
+    gj = os.path.splitext(path)[0] + ".geojson"
+    with open(gj, "w", encoding="utf-8") as f:
+        json.dump(geojson(data), f, ensure_ascii=False, indent=1)
+    title = "Domy předků – " + ", ".join(sorted({e.get("obec", "") for e in data})[:3])
+    page = MAP_HTML.replace("__TITLE__", html.escape(title)).replace(
+        "__DATA__", json.dumps(data, ensure_ascii=False).replace("</", "<\\/"))
+    with open(out, "w", encoding="utf-8") as f:
+        f.write(page)
+    print(f"mapa: {out}\nGeoJSON: {gj}  ({sum(e.get('lat') is not None for e in data)} bodů)")
+
+
+def main(argv):
+    if len(argv) < 3:
+        print(__doc__); return
+    cmd, path = argv[1], argv[2]
+    if cmd == "nova":
+        if not os.path.exists(path):
+            save(path, [])
+        print(path)
+    elif cmd == "pridej":
+        pridej(path, argv[3:])
+    elif cmd == "dopln":
+        dopln(path, "--znovu" in argv)
+    elif cmd == "vypis":
+        vypis(path)
+    elif cmd == "mapa":
+        mapa(path, argv[3] if len(argv) > 3 else None)
+    else:
+        print(__doc__)
+
+
+if __name__ == "__main__":
+    main(sys.argv)

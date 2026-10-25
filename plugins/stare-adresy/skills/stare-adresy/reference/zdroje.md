@@ -1,0 +1,63 @@
+# Zdroje a služby (ověřeno 25. 10. 2026)
+
+| Co | Kde | Přístup |
+|---|---|---|
+| Dnešní parcely, adresy, k.ú. (RÚIAN) | `https://ags.cuzk.gov.cz/arcgis/rest/services/RUIAN/MapServer` – vrstvy 1 AdresniMisto, 5 Parcela, 7 KatastralniUzemi, 12 Obec | veřejné REST `query`, bez klíče |
+| Převod S-JTSK ↔ WGS84 | `https://ags.cuzk.gov.cz/arcgis/rest/services/Utilities/Geometry/GeometryServer/project` (5514 ↔ 4326) | veřejné |
+| Indikační skici (Čechy NA, Morava MZA, Slezsko ZA Opava) | aplikace https://ags.cuzk.gov.cz/archiv/ , prohlížeč `archiv/openmap.html?typ=skicic&idrastru=<kód>` | jen přes aplikaci (služba `arcgis4/…/Archiv/*` chce token aplikace – **neobcházet**) |
+| Císařské otisky napasované | tamtéž, vrstva „Císařské otisky“ (`archiv_spojene_cisarske_otisky`) | jen přes aplikaci |
+| Indikační skici Moravy | https://www.mza.cz/indikacniskici/ | veřejný prohlížeč MZA |
+| Dnešní katastrální mapa (podklad do mapy) | WMS `https://services.cuzk.gov.cz/wms/local-km-wms.asp`, vrstva `KN` | veřejné |
+| Podkladové dlaždice | `https://ags.cuzk.gov.cz/arcgis1/rest/services/ZTM_WM/MapServer/tile/{z}/{y}/{x}` a `ORTOFOTO_WM` | veřejné |
+
+Pole RÚIAN, která nástroje používají: Parcela `kmenovecislo`, `poddelenicisla`, `druhcislovanikod` (1 = stavební
+parcela „st.“, 2 = pozemková), `katastralniuzemi`, `vymeraparcely`; AdresniMisto `cislodomovni`, `adresa`
+(„Svinná 46, 56002 Česká Třebová“, u čísel evidenčních „č.ev.“).
+
+## Už nalezené indikační skici (kód pro `openmap.html?typ=skicic&idrastru=<kód>`)
+| k.ú. (kód) | skica | rok | poznámka |
+|---|---|---|---|
+| Svinná u České Třebové (671703) | CHR473018390 | 1839 | |
+| Přívrat (736384) | CHR360018380 | 1838 | |
+| Česká Třebová (621757) | CHR490018390 | 1839 | město na zvláštních listech vlevo dole |
+| Parník (621820) | CHR318018390 | 1839 | |
+| Kozlov u České Třebové (671690) | CHR210018390 | 1839 | ves na rohu listů |
+| Dlouhá Třebová (626503) | CHR226018390 | 1839 | otisk tu nenačítá |
+| Řetová (745359) | CHR379018390 | 1839 | „Gross Ritte“ |
+| Vlčkov (783838) | CHR526018390 | 1839 | |
+| Hylváty (775339) | CHR139018390 | 1839 | |
+| Předměstí (734322) – i Dolní Lhota | CHR355018390 | 1839 | víc osad na jedné skice |
+| Svojanov (761141) | CHR470018390 | 1839 | |
+| Žamberk (794368) | HRA447018400 | 1840 | město na zvláštních listech |
+| Šestajovice u Prahy (762385) | KRM346018410 | 1841 | ves na rohu 4 listů |
+| Ostrov u Lanškrouna (715999) | CHR276018390 | 1839 | „Michelsdorf“ |
+| Dolní Libchavy (629553) | CHR252018390 | 1839 | |
+| Morašice u Litomyšle (698407) | CHR283018390 | 1839 | |
+| Koldín (668036) | HRA200018390 | 1839 | |
+| Krumsín (675202) | MOR116918340 | 1834 | MZA: mza.cz/indikacniskici/skica/detail/MOR116918340 |
+| Zhoř u České Třebové (792900) | CHR566018390 | 1839 | sign. NA 9254-1 |
+
+**Jiné cesty ke kódu (ověřeno 25. 10. 2026):** veřejný seznam kódů pro Čechy neexistuje. Kód (CHR/HRA/KRM… + číslo + rok)
+nejde odvodit – prostřední číslo neodpovídá abecedě ani signatuře; **kódy nezkoušej naslepo** (byl by to průzkum služby
+mimo aplikaci). Signatura Národního archivu („9254-1 Zhoř“, řazeno abecedně podle německého jména: 0961 Böhmisch Trübau,
+6261 Přiwrat, 7639 Swynna) se hodí pro objednávku skenu u NA (`digi.nacr.cz/formis/formular.php?sign=<signatura>`),
+ne pro prohlížeč. Morava: veřejný seznam MZA podle písmen (`mza.cz/indikacniskici/skica/?letter=S`). Jinak jen
+vyhledání v aplikaci Archiv – při výpadku počkat (25. 10. 2026 trval výpadek vyhledávání asi 1–2 hodiny).
+
+Starý web archivnimapy.cuzk.cz / .gov.cz už neexistuje (DNS nenalezeno) – nepoužívej staré návody s ním.
+
+## Podmínky (přečteno 25. 10. 2026)
+- **Podmínky poskytování síťových služeb ČÚZK** (cuzk.gov.cz → Předpisy → Podmínky poskytování prostorových dat a síťových
+  služeb): služby otevřené, užití komerční i nekomerční bez omezení, „pokud rozsah užití není na újmu poskytovatele“;
+  povinnost uvést „ČÚZK – on-line“ při užití prohlížecí služby ve vlastním produktu; ČÚZK může dočasně omezit přístup
+  a uživateli, který „přetěžuje technologickou infrastrukturu ČÚZK“, v tom zabránit technickými prostředky.
+- **Podmínky poskytování prostorových dat ČÚZK:** otevřená data (RÚIAN, ZABAGED, Ortofoto ČR, státní mapová díla…)
+  zdarma pod CC BY 4.0, uvádět zdroj „ČÚZK, rok“.
+- **Zásady užívání dat a služeb ZÚ** (ZÚ-01256/2026-13310, 23. 3. 2026, geoportal.cuzk.cz/Dokumenty/Podminky.pdf):
+  čl. 1.3 archiválie ÚAZK podle zákona o archivnictví 499/2004 Sb.; čl. 3 data ÚAZK jen na žádost přes E-shop a po
+  zaplacení; čl. 7.3 síťové služby zdarma, při „nepřiměřeném přetěžování“ zábrana technickými prostředky.
+- O automatizovaném přístupu ani o snímcích obrazovky z aplikace Archiv podmínky nic výslovně neříkají; skill proto
+  drží „jako člověk v prohlížeči, jedno vlákno, žádné hromadné stahování“.
+- Aplikace Archiv: „Indikační skici nejsou vlastnictvím Zeměměřického úřadu“ – vlastníkem je příslušný archiv.
+
+Data RÚIAN: ČÚZK, licence CC BY 4.0 – na mapě uveď „ČÚZK“.

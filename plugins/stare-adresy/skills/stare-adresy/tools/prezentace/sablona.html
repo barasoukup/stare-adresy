@@ -1,0 +1,269 @@
+<title>Domy předků</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,500;0,700;1,500&family=Source+Sans+3:wght@400;600&display=swap">
+<style>
+/*LEAFLET_CSS*/
+/* Rozvržení: seznam domů vlevo (na mobilu pod mapou), mapa vpravo; barva bodu = jistota polohy. */
+:root {
+  --bg: #f6f4ef; --panel: #fffdf8; --fg: #2b2620; --muted: #6f665b; --line: #e2dccf;
+  --ink: #7a4a1f; --ink-soft: #f1e6d6; --map-bg: #e9e5dc;
+  --jA: #2f7d4a; --jB: #c28a12; --jC: #c4561b; --jD: #8a8a85;
+  --display: "Spectral", Georgia, "Times New Roman", serif;
+  --body: "Source Sans 3", "Segoe UI", system-ui, sans-serif;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #1d1a16; --panel: #24201b; --fg: #ece5d8; --muted: #a99e8f; --line: #3a342c;
+  --ink: #e0b07a; --ink-soft: #3a2e20; --map-bg: #2a2621;
+  --jA: #5cb97a; --jB: #e2b34a; --jC: #ec8a55; --jD: #a3a39c; color-scheme: dark } }
+:root[data-theme="dark"] {
+  --bg: #1d1a16; --panel: #24201b; --fg: #ece5d8; --muted: #a99e8f; --line: #3a342c;
+  --ink: #e0b07a; --ink-soft: #3a2e20; --map-bg: #2a2621;
+  --jA: #5cb97a; --jB: #e2b34a; --jC: #ec8a55; --jD: #a3a39c; color-scheme: dark }
+html, body { height: 100%; }
+body { background: var(--bg); color: var(--fg); font: 15px/1.45 var(--body); }
+.app { height: 100%; display: grid; grid-template-columns: minmax(320px, 410px) 1fr; }
+aside { display: flex; flex-direction: column; min-width: 0; min-height: 0; border-right: 1px solid var(--line); background: var(--panel); }
+header { padding-block: 16px 12px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: 16px; border-bottom: 1px solid var(--line); display: grid; gap: 10px; }
+h1 { font: 700 1.55rem/1.1 var(--display); margin: 0; text-wrap: balance; }
+.lead { margin: 0; color: var(--muted); font-size: .9rem; }
+.filters { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+.chip { display: inline-flex; align-items: center; gap: 6px; border: 1px solid var(--line); background: var(--bg); color: var(--fg);
+  border-radius: 999px; padding: 3px 10px 3px 6px; font: 600 .82rem var(--body); cursor: pointer; }
+.chip[aria-pressed="false"] { opacity: .45; }
+.chip:focus-visible, select:focus-visible, button:focus-visible, .item:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+.dot { width: 11px; height: 11px; border-radius: 50%; flex: none; }
+.jA { background: var(--jA); } .jB { background: var(--jB); } .jC { background: var(--jC); } .jD { background: var(--jD); }
+select { font: inherit; font-size: .85rem; padding: 3px 6px; border: 1px solid var(--line); border-radius: 6px; background: var(--bg); color: var(--fg); }
+.count { color: var(--muted); font-size: .82rem; margin-left: auto; font-variant-numeric: tabular-nums; }
+.list { overflow-y: auto; min-height: 0; padding-bottom: env(safe-area-inset-bottom, 0px); }
+.group { position: sticky; top: 0; z-index: 2; background: var(--panel); padding: 10px 16px 4px max(16px, env(safe-area-inset-left, 0px));
+  font: 600 .75rem var(--body); letter-spacing: .08em; text-transform: uppercase; color: var(--ink); border-bottom: 1px solid var(--line); }
+.item { display: grid; grid-template-columns: 54px 1fr; gap: 4px 12px; padding: 12px 16px 12px max(16px, env(safe-area-inset-left, 0px)); border-bottom: 1px solid var(--line); cursor: pointer; }
+.item:hover { background: var(--ink-soft); }
+.item.active { background: var(--ink-soft); box-shadow: inset 3px 0 0 var(--ink); }
+.cp { font: 700 1.5rem/1 var(--display); text-align: right; font-variant-numeric: tabular-nums; }
+.cp small { display: block; font: 600 .62rem var(--body); letter-spacing: .08em; color: var(--muted); text-transform: uppercase; margin-top: 3px; }
+.body { min-width: 0; display: grid; gap: 3px; }
+.top { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+.badge { display: inline-flex; align-items: center; gap: 5px; font: 600 .75rem var(--body); color: var(--fg); }
+.meta { color: var(--muted); font-size: .82rem; }
+.osoby { font-style: italic; font-family: var(--display); }
+.zj { font-size: .84rem; }
+.warn { font-size: .82rem; color: var(--jC); font-weight: 600; }
+.thumb { margin-top: 4px; max-width: 100%; width: 260px; border-radius: 4px; border: 1px solid var(--line); display: block; }
+main { position: relative; min-width: 0; min-height: 0; }
+#map { position: absolute; inset: 0; background: var(--map-bg); }
+.switch { position: absolute; z-index: 500; top: calc(10px + env(safe-area-inset-top, 0px)); right: max(10px, env(safe-area-inset-right, 0px));
+  display: flex; background: var(--panel); border: 1px solid var(--line); border-radius: 8px; overflow: hidden; box-shadow: 0 1px 4px #0002; }
+.switch button { font: 600 .8rem var(--body); border: 0; background: transparent; color: var(--fg); padding: 6px 11px; cursor: pointer; }
+.switch button[aria-pressed="true"] { background: var(--ink); color: var(--panel); }
+.pin { display: grid; place-items: center; width: 30px; height: 30px; border-radius: 50%; border: 2px solid #fff;
+  color: #fff; font: 700 .72rem/1 var(--body); box-shadow: 0 1px 3px #0006; font-variant-numeric: tabular-nums; }
+.obec-pin { display: inline-flex; align-items: baseline; gap: 6px; white-space: nowrap; transform: translate(-50%, 0);
+  background: var(--panel); color: var(--fg); border: 2px solid var(--ink); border-radius: 999px; padding: 3px 10px;
+  font: .8rem/1.2 var(--body); box-shadow: 0 1px 4px #0005; cursor: pointer; }
+.obec-pin b { font: 700 .85rem var(--display); }
+.obec-pin i { font-style: normal; color: var(--muted); font-size: .75rem; }
+.pin.sel { outline: 3px solid var(--ink); outline-offset: 1px; }
+.leaflet-popup-content-wrapper, .leaflet-popup-tip { background: var(--panel); color: var(--fg); }
+.leaflet-popup-content { font: .85rem/1.4 var(--body); margin: 12px 14px; }
+.leaflet-popup-content h3 { font: 700 1.05rem var(--display); margin: 0 0 4px; }
+.leaflet-popup-content img { width: 280px; max-width: 100%; display: block; margin-top: 6px; border-radius: 3px; }
+.leaflet-container a { color: var(--ink); }
+.leaflet-control-attribution { background: color-mix(in srgb, var(--panel) 85%, transparent) !important; color: var(--muted); }
+.leaflet-bar a { background: var(--panel); color: var(--fg); border-color: var(--line); }
+.lightbox { position: fixed; inset: 0; z-index: 2000; background: #000c; display: grid; place-items: center; padding: max(16px, env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) max(16px, env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px)); cursor: zoom-out; }
+.lightbox img { max-width: min(100%, 900px); max-height: 90%; border-radius: 4px; image-rendering: auto; }
+@media (max-width: 760px) {
+  .app { grid-template-columns: 1fr; grid-template-rows: 52% 48%; }
+  main { order: -1; } aside { border-right: 0; border-top: 1px solid var(--line); }
+  header { padding-block: 10px 8px; } .lead { display: none; }
+}
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
+</style>
+
+<div class="app">
+  <aside>
+    <header>
+      <h1>Domy předků</h1>
+      <p class="lead">Kde stály domy z matrik podle indikačních skic stabilního katastru (1824–1843), porovnané s dnešním katastrem. Klikni na dům v seznamu nebo v mapě.</p>
+      <div class="filters" id="filters"></div>
+      <div class="filters">
+        <label for="obec" class="meta">Obec</label>
+        <select id="obec"><option value="">všechny</option></select>
+        <span class="count" id="count"></span>
+      </div>
+    </header>
+    <div class="list" id="list"></div>
+  </aside>
+  <main>
+    <div id="map"></div>
+    <div class="switch" role="group" aria-label="Podklad mapy">
+      <button type="button" id="b-ztm" aria-pressed="true">Mapa</button>
+      <button type="button" id="b-orto" aria-pressed="false">Letecký snímek</button>
+    </div>
+  </main>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js"></script>
+<script>
+const D = /*DATA*/;
+const J = {A: "jistá poloha", B: "podle skici / otisku, dnes jinak", C: "jen podle dnešního č.p.", D: "jen obec"};
+const MET = {stp: "stavební parcela ze skici", otisk: "bod na císařském otisku", kotvy: "spočteno z kotev skici", dnesni_cp: "dnešní č.p.", obec: "střed obce", "ručně": "ručně"};
+const css = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim() || "#7a4a1f";
+const POSUNY = /*POSUNY*/false;  // čáry k dnešnímu domu se stejným č.p. – jen pro ladění (mapa.py --posuny)
+const posun = e => e.dnes && e.dnes.cp_lat != null && (e.dnes.cp_vzdalenost_m || 0) > 30;
+const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({"&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;"}[c]));
+const skicaUrl = k => "https://ags.cuzk.gov.cz/archiv/openmap.html?typ=skicic&idrastru=" + encodeURIComponent(k);
+
+const map = L.map("map", {zoomSnap: 0.5, attributionControl: true, maxZoom: 19});
+map.attributionControl.setPrefix(false).addAttribution("Podklad: ČÚZK – on-line (ZTM, Ortofoto ČR), CC BY 4.0 · výřezy indikačních skic: Národní archiv / MZA, ČÚZK – Archiv");
+let src = "ztm";
+const over = D.podklady.map(p => ({...p, layer: null}));
+function syncOverlays() {
+  const z = map.getZoom(), vb = map.getBounds();
+  for (const o of over) {
+    const b = L.latLngBounds(o.bounds);
+    const want = (o.img === "prehled-cr") || (o.img === "prehled-okoli" && z >= 10) || (o.obec && z >= o.od && vb.intersects(b));
+    if (want && !o.layer) { o.layer = L.imageOverlay(`podklady/${o.img}_${src}.jpg`, b, {zIndex: o.z}).addTo(map); }
+    else if (!want && o.layer) { o.layer.remove(); o.layer = null; }
+  }
+}
+map.on("moveend zoomend", () => { syncOverlays(); updateMarkers(); });
+const DOMY_OD = 13;  // od tohoto přiblížení jednotlivé domy, pod ním jedna značka na obec
+function setSrc(s) {
+  src = s;
+  for (const o of over) if (o.layer) o.layer.setUrl(`podklady/${o.img}_${src}.jpg`);
+  document.getElementById("b-ztm").setAttribute("aria-pressed", s === "ztm");
+  document.getElementById("b-orto").setAttribute("aria-pressed", s === "orto");
+}
+document.getElementById("b-ztm").onclick = () => setSrc("ztm");
+document.getElementById("b-orto").onclick = () => setSrc("orto");
+
+const items = D.adresy.map(e => ({e, j: e.jistota || "D"}));
+const markers = new Map();
+function popupHtml(e) {
+  let h = `<h3>${esc(e.obec)} č.p. ${esc(e.cp)}</h3><div class="meta">${esc(J[e.jistota || "D"])} · ${esc(MET[e.metoda] || e.metoda || "")}${e.stp ? " · na skici st. p. " + esc(e.stp) : ""}</div>`;
+  if (e.osoby) h += `<div class="osoby">${esc(e.osoby)}</div>`;
+  if (e.cteni) h += `<div class="warn">Nejisté čtení: ${esc(e.cteni)}</div>`;
+  if (e.dnes && e.dnes.adresy && e.dnes.adresy.length) h += `<div>dnes na místě: ${esc(e.dnes.adresy.join(", "))}</div>`;
+  if (posun(e)) h += `<div>Dnešní dům s tímto číslem (${esc(e.dnes.cp_adresa)}) stojí ${esc(e.dnes.cp_vzdalenost_m)} m odtud – číslo bylo později přeneseno.</div>`;
+  if (e.zjisteni && e.zjisteni.length) h += `<div>${esc(e.zjisteni.join("; "))}</div>`;
+  if (e.vyrez) h += `<img src="${esc(e.vyrez)}" alt="Výřez indikační skici, ${esc(e.obec)} č.p. ${esc(e.cp)}">`;
+  if (e.skica) h += `<div><a href="${skicaUrl(e.skica)}" target="_blank" rel="noopener">otevřít skicu ${esc(e.skica)}${e.skica_rok ? " (" + esc(e.skica_rok) + ")" : ""}</a></div>`;
+  return h;
+}
+for (const it of items) {
+  const e = it.e;
+  if (e.lat == null) continue;
+  const icon = L.divIcon({className: "", html: `<span class="pin j${it.j}">${esc(e.cp)}</span>`, iconSize: [30, 30], iconAnchor: [15, 15], popupAnchor: [0, -14]});
+  const m = L.marker([e.lat, e.lon], {icon, title: `${e.obec} č.p. ${e.cp}`, keyboard: true}).bindPopup(popupHtml(e), {maxWidth: 320});
+  m.on("click", () => select(e.id, false));
+  markers.set(e.id, m);
+  it.m = m;
+  if (POSUNY && posun(e)) {
+    const now = [e.dnes.cp_lat, e.dnes.cp_lon];
+    it.extra = [
+      L.polyline([[e.lat, e.lon], now], {color: css("--ink"), weight: 2, dashArray: "5 6", interactive: false}),
+      L.circleMarker(now, {radius: 6, color: css("--ink"), weight: 2, fillColor: css("--panel"), fillOpacity: 1})
+        .bindTooltip(`dnešní ${esc(e.dnes.cp_adresa)}`)
+    ];
+  }
+}
+
+// filtry
+const on = {A: true, B: true, C: true, D: true};
+const fbox = document.getElementById("filters");
+for (const k of "ABCD") {
+  const b = document.createElement("button");
+  b.type = "button"; b.className = "chip"; b.id = "f-" + k; b.setAttribute("aria-pressed", "true");
+  b.innerHTML = `<span class="dot j${k}"></span>${k} · ${esc(J[k])}`;
+  b.onclick = () => { on[k] = !on[k]; b.setAttribute("aria-pressed", on[k]); render(); };
+  fbox.appendChild(b);
+}
+const sel = document.getElementById("obec");
+const obce = [...new Set(items.map(i => i.e.obec))].sort((a, b) => a.localeCompare(b, "cs"));
+for (const o of obce) { const op = document.createElement("option"); op.value = op.textContent = o; sel.appendChild(op); }
+sel.onchange = () => { render(); fit(); };
+
+const list = document.getElementById("list");
+let active = null;
+function visible() { return items.filter(i => on[i.j] && (!sel.value || i.e.obec === sel.value)); }
+function render() {
+  const vis = visible();
+  list.innerHTML = "";
+  let last = null;
+  const sorted = [...vis].sort((a, b) => a.e.obec.localeCompare(b.e.obec, "cs") || (parseInt(a.e.cp) || 0) - (parseInt(b.e.cp) || 0));
+  for (const it of sorted) {
+    const e = it.e;
+    if (e.obec !== last) { const g = document.createElement("div"); g.className = "group"; g.textContent = e.obec; list.appendChild(g); last = e.obec; }
+    const d = document.createElement("div");
+    d.className = "item" + (active === e.id ? " active" : ""); d.tabIndex = 0; d.dataset.id = e.id;
+    let h = `<div class="cp">${esc(e.cp)}<small>č.p.</small></div><div class="body">`;
+    h += `<div class="top"><span class="badge"><span class="dot j${it.j}"></span>${esc(J[it.j])}</span>${e.rok ? `<span class="meta">v matrice ${esc(e.rok)}</span>` : ""}</div>`;
+    if (e.osoby) h += `<div class="osoby">${esc(e.osoby)}</div>`;
+    if (e.cteni) h += `<div class="warn">Nejisté čtení: ${esc(e.cteni)}</div>`;
+    if (posun(e)) h += `<div class="zj"><b>Posun:</b> dnešní č.p. ${esc(e.cp)} je o ${esc(e.dnes.cp_vzdalenost_m)} m jinde</div>`;
+    if (e.zjisteni && e.zjisteni.length) h += `<div class="zj">${esc(e.zjisteni.join("; "))}</div>`;
+    if (e.poznamka) h += `<div class="meta">${esc(e.poznamka)}</div>`;
+    if (e.vyrez) h += `<img class="thumb" loading="lazy" src="${esc(e.vyrez)}" alt="Výřez skici ${esc(e.obec)} č.p. ${esc(e.cp)}">`;
+    d.innerHTML = h + "</div>";
+    d.onclick = ev => { if (ev.target.classList.contains("thumb")) { lightbox(ev.target.src); return; } select(e.id, true); };
+    d.onkeydown = ev => { if (ev.key === "Enter") select(e.id, true); };
+    list.appendChild(d);
+  }
+  updateMarkers();
+  const n = vis.filter(i => i.m).length;
+  document.getElementById("count").textContent = `${vis.length} adres · ${n} na mapě`;
+}
+// značky obcí pro oddálený pohled
+const obecMarkers = new Map();
+for (const o of obce) {
+  const pts = items.filter(i => i.m && i.e.obec === o).map(i => i.m.getLatLng());
+  if (!pts.length) continue;
+  const c = L.latLngBounds(pts).getCenter();
+  const m = L.marker(c, {icon: L.divIcon({className: "", html: `<span class="obec-pin"><b>${esc(o.split(" (")[0])}</b><i></i></span>`, iconSize: null, iconAnchor: [0, 14]}), keyboard: true, title: o});
+  m.on("click", () => map.fitBounds(L.latLngBounds(pts), {padding: [50, 50], maxZoom: 17}));
+  obecMarkers.set(o, m);
+}
+function updateMarkers() {
+  const vis = visible(), domy = map.getZoom() >= DOMY_OD;
+  for (const it of items) if (it.m) {
+    const show = domy && vis.includes(it);
+    for (const l of [it.m, ...(it.extra || [])]) { if (show && !map.hasLayer(l)) l.addTo(map); if (!show && map.hasLayer(l)) l.remove(); }
+  }
+  for (const [o, m] of obecMarkers) {
+    const n = vis.filter(i => i.m && i.e.obec === o).length;
+    const show = !domy && n > 0;
+    if (show && !map.hasLayer(m)) m.addTo(map);
+    if (!show && map.hasLayer(m)) m.remove();
+    const el = m.getElement && m.getElement();
+    if (el) el.querySelector("i").textContent = n === 1 ? "1 dům" : (n < 5 ? `${n} domy` : `${n} domů`);
+  }
+}
+function select(id, fly) {
+  active = id;
+  for (const el of list.querySelectorAll(".item")) el.classList.toggle("active", el.dataset.id === id);
+  for (const [k, m] of markers) { const p = m.getElement()?.querySelector(".pin"); if (p) p.classList.toggle("sel", k === id); }
+  const m = markers.get(id);
+  if (m && fly) { map.setView(m.getLatLng(), 17); m.openPopup(); }
+  const el = list.querySelector(`[data-id="${CSS.escape(id)}"]`);
+  if (el && !fly) el.scrollIntoView({block: "nearest"});
+}
+function fit() {
+  const pts = visible().filter(i => i.m).map(i => i.m.getLatLng());
+  if (pts.length) map.fitBounds(L.latLngBounds(pts), {padding: [40, 40], maxZoom: 16});
+}
+function lightbox(srcUrl) {
+  const b = document.createElement("div"); b.className = "lightbox"; b.innerHTML = `<img src="${esc(srcUrl)}" alt="Výřez skici">`;
+  b.onclick = () => b.remove(); document.body.appendChild(b);
+}
+map.on("popupopen", ev => { const img = ev.popup.getElement().querySelector("img"); if (img) img.onclick = () => lightbox(img.src); });
+render();
+// výchozí pohled: hlavní shluk domů (přehled okolí)
+const okoli = over.find(o => o.img === "prehled-okoli");
+const near = items.filter(i => i.m && okoli && L.latLngBounds(okoli.bounds).contains(i.m.getLatLng())).map(i => i.m.getLatLng());
+map.fitBounds(L.latLngBounds(near.length ? near : items.filter(i => i.m).map(i => i.m.getLatLng())), {padding: [30, 30]});
+syncOverlays();
+</script>
