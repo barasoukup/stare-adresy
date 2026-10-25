@@ -5,7 +5,7 @@
   "plugins": [
     {
       "name": "stare-adresy",
-      "source": "./plugins/stare-adresy",
+      "source": "./",
       "description": "Najde, kde stál dům „obec + číslo popisné“ z matrik 18.–19. století podle indikačních skic a císařských otisků stabilního katastru (ČÚZK) a porovná to s dnešním katastrem; výstupem je mapa s výřezy skic."
     }
   ]

@@ -23,7 +23,7 @@ V Claude Code:
 ```
 Aktualizace: `/plugin marketplace update stare-adresy`, pak `/plugin` → aktualizovat.
 
-Bez pluginů: stáhněte repozitář (Code → Download ZIP) a složku `plugins/stare-adresy/skills/stare-adresy`
+Bez pluginů: stáhněte repozitář (Code → Download ZIP) a složku `skills/stare-adresy`
 zkopírujte do `~/.claude/skills/`.
 
 **Potřebujete:** Python 3.9+ (jen standardní knihovna), ImageMagick (`magick`, jen pro mapu) a prohlížeč, který
@@ -55,7 +55,7 @@ umí adresy načíst přímo z jeho projektu (`data/osoby.py`) a mapa domů jde 
 - **Výřezy skic** jsou badatelské kopie pro vlastní potřebu. Při zveřejnění uveďte zdroj (např. „Národní archiv,
   Indikační skici, CHR473018390; ČÚZK – on-line“); pro tisk a publikace si kvalitní sken objednejte u archivu.
 
-Podrobnosti v `plugins/stare-adresy/skills/stare-adresy/reference/zdroje.md`.
+Podrobnosti v `skills/stare-adresy/reference/zdroje.md`.
 
 ## Licence
 
