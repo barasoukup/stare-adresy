@@ -164,11 +164,17 @@ def main(dest, files, posuny=False):
     print(f"přehled okolí z{z} {cnt} dlaždic")
     for f in os.listdir(OUT):
         publish[f"podklady/{f}"] = os.path.join(OUT, f)
-    for e in data:
+    os.makedirs(os.path.join(DEST, "vyrezy"), exist_ok=True)
+    for e in data:  # výřezy zkopírovat k mapě, ať složka funguje i lokálně (index.html otevřený z disku)
         if e.get("vyrez"):
             p = os.path.join(ROOT, e["vyrez"])
             if os.path.exists(p):
-                publish[e["vyrez"].replace("\\", "/")] = p
+                rel = "vyrezy/" + os.path.basename(p)
+                cil = os.path.join(DEST, "vyrezy", os.path.basename(p))
+                if os.path.abspath(p) != os.path.abspath(cil):
+                    shutil.copy2(p, cil)
+                e["vyrez"] = rel
+                publish[rel] = cil
             else:
                 e.pop("vyrez")
     css = open(os.path.join(TPL, "leaflet.css"), encoding="utf-8").read()
