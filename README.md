@@ -16,15 +16,21 @@ z jednoho rodokmenu stál zhruba každý pátý dům jinde než dnešní dům se
 
 ## Instalace
 
-V Claude Code:
+**Terminál (Claude Code CLI)** – v PowerShellu nebo jiném terminálu:
 ```
-/plugin marketplace add barasoukup/stare-adresy
-/plugin install stare-adresy@stare-adresy
+claude plugin marketplace add barasoukup/stare-adresy
+claude plugin install stare-adresy@stare-adresy
 ```
-Aktualizace: `/plugin marketplace update stare-adresy`, pak `/plugin` → aktualizovat.
+Uvnitř sezení Claude Code v terminálu jde totéž jako `/plugin marketplace add …` a `/plugin install …`.
+Aktualizace: `claude plugin marketplace update stare-adresy`, pak `claude plugin update stare-adresy@stare-adresy`.
 
-Bez pluginů: stáhněte repozitář (Code → Download ZIP) a složku `skills/stare-adresy`
-zkopírujte do `~/.claude/skills/`.
+**Aplikace Claude (záložka Code)** sama marketplace z GitHubu přidat neumí (`/plugin` tam jen otevře prohlížeč
+pluginů). Stačí ale jednou spustit dva příkazy výše v terminálu – aplikace sdílí nastavení a plugin se v ní po
+restartu sezení objeví. Claude Code CLI nainstalujete příkazem `npm install -g @anthropic-ai/claude-code`
+(potřebuje Node.js).
+
+**Bez pluginů:** stáhněte repozitář (Code → Download ZIP) a složku `skills/stare-adresy` zkopírujte do
+`~/.claude/skills/` (ve Windows `C:\Users\<jméno>\.claude\skills\`). Takto nainstalovaný skill se ale neaktualizuje.
 
 **Potřebujete:** Python 3.9+ (jen standardní knihovna), ImageMagick (`magick`, jen pro mapu) a prohlížeč, který
 Claude ovládá (vestavěný prohlížeč v aplikaci Claude, nebo Claude in Chrome). Skici se čtou z obrazovky – bez
