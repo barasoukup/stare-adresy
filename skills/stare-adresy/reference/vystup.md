@@ -8,7 +8,7 @@ Vlastnosti bodu (`properties`), chybějící hodnoty se vynechávají:
 
 | pole | význam |
 |---|---|
-| `id` | klíč adresy (`svinna-46`) |
+| `id` | klíč adresy (`nova-ves-46`) |
 | `obec`, `cp` | obec a číslo popisné, jak je v matrice |
 | `rok` | rok zápisu v matrice (nejstarší) |
 | `osoby` | kdo tam žil (text) |

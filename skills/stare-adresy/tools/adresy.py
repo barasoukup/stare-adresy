@@ -4,7 +4,7 @@
 Použití:
   adresy.py nova <soubor.json>                 založí prázdný seznam (když neexistuje)
   adresy.py pridej <soubor.json> klíč=hodnota … přidá / upraví adresu, např.
-        id=svinna-46 obec=Svinná cp=46 ku_kod=671703 rok=1847 osoby="Jan Novák (1847)"
+        id=nova-ves-46 obec="Nová Ves" cp=46 ku_kod=<kód k.ú.> rok=1847 osoby="Jan Novák (1847)"
         stp=4 skica=CHR473018390 skica_cp=46        (co jsi přečetl na indikační skice; bez skica_cp nejvýš B)
         sjtsk=-605511,-1081530                        (bod z císařského otisku v aplikaci ČÚZK Archiv)
         sjtsk=… bod=kotvy                              (bod spočtený z kotev skici – kotvy.py)
@@ -174,12 +174,12 @@ def urci(e):
             par = ruian.parcela_pod(dn[0]["lat"], dn[0]["lon"])
             e["dnes"]["parcela"] = par
             if par and par.startswith("p.č."):
-                # V k.ú. s přečíslovanými parcelami (Žamberk) stojí na p.č. i staré domy – pak to nic neznamená.
+                # V k.ú. s přečíslovanými parcelami stojí na p.č. i staré domy – pak to nic neznamená.
                 sous = [ruian.parcela_pod(a["lat"], a["lon"]) for c in (int(e["cp"]) - 1, int(e["cp"]) + 1) if c > 0
                         for a in ruian.cp(e["ku_kod"], c)[:1]]
                 if sous and all(s and s.startswith("p.č.") for s in sous):
                     notes.append(f"dnešní dům stojí na pozemkové parcele ({par}), ale stejně i sousední č.p. – parcely tu "
-                                 "byly nejspíš přečíslovány (jako v Žamberku), o stáří domu to nic neříká; ověř na skice "
+                                 "byly nejspíš přečíslovány, o stáří domu to nic neříká; ověř na skice "
                                  "a polohu spočítej z kotev podle dnešních č.p. (kotvy.py, klíč „cp“)")
                 else:
                     notes.append(f"dnešní dům stojí na pozemkové parcele ({par}) – vznikl nejspíš až po stabilním katastru, "

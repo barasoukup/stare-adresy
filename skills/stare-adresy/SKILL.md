@@ -45,12 +45,12 @@ Nástroje jsou jen standardní knihovna Pythonu ≥ 3.9 a volají veřejné slu�
 ## Postup pro jednu adresu
 Vstup: obec (jak je v matrice), č.p., rok zápisu, kdo tam žil. Ulož si ho hned: `adresy.py pridej adresy.json id=… obec=… cp=… rok=… osoby="…"`.
 
-1. **Katastrální území.** `ruian.py ku "Přívrat"` → kód. Matriční obec ≠ vždy dnešní obec: osady, německá jména
-   („Swynna“ = Svinná, „Böhmisch Trübau“ = Česká Třebová), k.ú. se často jmenuje s přívlastkem („Svinná u České
-   Třebové“) – hledej kratší začátek jména. **Víc obcí stejného jména** (Zhoř: 14 k.ú.): vyber tu, která leží u farní
+1. **Katastrální území.** `ruian.py ku "Nová Ves"` → kód. Matriční obec ≠ vždy dnešní obec: osady, německá jména
+   („Neudorf“ = Nová Ves, „Böhmisch …“ = Česká …), k.ú. se často jmenuje s přívlastkem („Nová Ves u Města“)
+   – hledej kratší začátek jména. **Víc obcí stejného jména** (běžné jméno vsi: i 14 k.ú.): vyber tu, která leží u farní
    obce nebo u jiných obcí z téže matriky – porovnej polohy (`ruian.py cp <k.ú.> 1` u kandidátů vs. známá obec), nehádej.
-   Nejsi-li si jistý, zeptej se uživatele. Uživatel často uvede **farnost** (Litomyšl), zatímco obce z matriky leží
-   v jiných k.ú. s přívlastkem podle jiného města („Zhoř u České Třebové“) – hledej obec, ne farnost.
+   Nejsi-li si jistý, zeptej se uživatele. Uživatel často uvede **farnost** (farní město), zatímco obce z matriky leží
+   v jiných k.ú. s přívlastkem podle jiného města („Lhota u Jiného Města“) – hledej obec, ne farnost.
    U města zjisti, zda č.p. nepatří **předměstí** s vlastním číslováním (bývá samostatné k.ú. nebo samostatná skica).
    Doplň `ku_kod=`.
 2. **Najdi skicu** – nejdřív v tabulce už nalezených skic (`reference/zdroje.md`), jinak v aplikaci ČÚZK Archiv; otevři

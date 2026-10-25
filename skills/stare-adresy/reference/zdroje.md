@@ -12,7 +12,7 @@
 
 Pole RÚIAN, která nástroje používají: Parcela `kmenovecislo`, `poddelenicisla`, `druhcislovanikod` (1 = stavební
 parcela „st.“, 2 = pozemková), `katastralniuzemi`, `vymeraparcely`; AdresniMisto `cislodomovni`, `adresa`
-(„Svinná 46, 56002 Česká Třebová“, u čísel evidenčních „č.ev.“).
+(„Nová Ves 46, 56002 Město“, u čísel evidenčních „č.ev.“).
 
 ## Už nalezené indikační skici (kód pro `openmap.html?typ=skicic&idrastru=<kód>`)
 | k.ú. (kód) | skica | rok | poznámka |
@@ -39,8 +39,7 @@ parcela „st.“, 2 = pozemková), `katastralniuzemi`, `vymeraparcely`; Adresni
 
 **Jiné cesty ke kódu (ověřeno 25. 10. 2026):** veřejný seznam kódů pro Čechy neexistuje. Kód (CHR/HRA/KRM… + číslo + rok)
 nejde odvodit – prostřední číslo neodpovídá abecedě ani signatuře; **kódy nezkoušej naslepo** (byl by to průzkum služby
-mimo aplikaci). Signatura Národního archivu („9254-1 Zhoř“, řazeno abecedně podle německého jména: 0961 Böhmisch Trübau,
-6261 Přiwrat, 7639 Swynna) se hodí pro objednávku skenu u NA (`digi.nacr.cz/formis/formular.php?sign=<signatura>`),
+mimo aplikaci). Signatura Národního archivu („<číslo>-1 <obec>“, řazeno abecedně podle německého jména obce) se hodí pro objednávku skenu u NA (`digi.nacr.cz/formis/formular.php?sign=<signatura>`),
 ne pro prohlížeč. Morava: veřejný seznam MZA podle písmen (`mza.cz/indikacniskici/skica/?letter=S`). Jinak jen
 vyhledání v aplikaci Archiv – při výpadku počkat (25. 10. 2026 trval výpadek vyhledávání asi 1–2 hodiny).
 

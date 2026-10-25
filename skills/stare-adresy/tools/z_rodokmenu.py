@@ -4,8 +4,8 @@
 Použití: z_rodokmenu.py <složka projektu rodokmenu> <adresy.json> [--od 1700] [--do 1925]
 
 Čte `data/osoby.py` (předci P, příbuzní SIDE) – soubor se NEspouští, jen se rozebere (ast) – a z faktů `f`, textů `t`
-a poznámek vybere zmínky „<obec> čp. <číslo>“ s rokem a osobou. Skloněné tvary obcí („v Přívratu“, „z Dlouhé
-Třebové“) převede podle `data/mista.json` (pole `re`) na základní název; co nepozná, označí `obec_overit`.
+a poznámek vybere zmínky „<obec> čp. <číslo>“ s rokem a osobou. Skloněné tvary obcí („v Lhotě“, „z Dlouhé
+Vsi“) převede podle `data/mista.json` (pole `re`) na základní název; co nepozná, označí `obec_overit`.
 Katastrální území doplní, je-li jednoznačné (jinak `ku_kandidati`). Existující adresy doplní (osoby, rok), nic nemaže.
 
 Zmínky po roce --do (výchozí 1925) přeskočí: skici jsou z let 1824–1843 a mladší adresy patří často žijícím lidem.
@@ -55,7 +55,7 @@ KONCOVKY = [("ích", "e"), ("ích", "y"), ("ově", "ov"), ("ě", "a"), ("ě", ""
 
 
 def varianty(text):
-    """Možné základní tvary skloněného názvu: „Dlouhé Třebové“ → „Dlouhá Třebová“, „Žamberku“ → „Žamberk“…"""
+    """Možné základní tvary skloněného názvu: „Dlouhé Lhoty“ → „Dlouhá Lhota“, „Hradci“ → „Hradec“…"""
     slova = text.split()
     out = [text]
     for z, n in KONCOVKY:

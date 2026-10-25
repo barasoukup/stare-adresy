@@ -9,7 +9,7 @@ finish rendering“). Měj otevřenou jen jednu kartu ČÚZK – druhá karta t�
 
 **Který prohlížeč:** vestavěný panel bývá nízký (např. 900 × 350 px) – při čitelném měřítku je vidět jen pár domů
 a `resize_window` mapu ArcGIS nezvětší (překreslí se do rohu). Claude in Chrome dá celé okno (1500 × 900) a čte se
-mnohem rychleji; u některých skic (Česká Třebová CHR490018390) ale Chrome při snímku obrazovky zamrzá („renderer frozen“,
+mnohem rychleji; u některých skic (velká městská skica) ale Chrome při snímku obrazovky zamrzá („renderer frozen“,
 stránka jinak běží) – pak přepni zpět do vestavěného panelu a požádej uživatele, ať ho zvětší. Okno Chromu musí být
 vpředu, jinak snímky selhávají taky.
 
@@ -21,10 +21,10 @@ v `zdroje.md` a prohlížeč `openmap.html` – ten bývá funkční i tehdy; 2)
 
 ## 1. Najít skicu katastrálního území
 1. Do pole „Najít adresu nebo místo“ napiš název k.ú. nebo dnešní adresu **i s PSČ** a vyber z nabídky položku
-   se správným PSČ a obcí. Bez PSČ vyhledávání klidně skočí jinam („Přívrat 18“ našlo ulici Přívrat v jiném
-   městě). U obcí bez ulic piš ve tvaru „č.p. 18, 56002 Přívrat“. Zavři okénko „Výsledek vyhledávání“ (křížek).
+   se správným PSČ a obcí. Bez PSČ vyhledávání klidně skočí jinam („Lhota 18“ našlo ulici Lhota v jiném
+   městě). U obcí bez ulic piš ve tvaru „č.p. 18, 56002 Lhota“. Zavři okénko „Výsledek vyhledávání“ (křížek).
 2. Klikni do mapy uvnitř obce → vpravo panel „Výsledky“ s počty archiválií. Klikni na **Indikační skici**.
-3. Objeví se karta „7639-1 Svinná - dříve Swynna“ s kódem `CHR473018390`. Klik na náhled otevírá novou kartu, kterou
+3. Objeví se karta „<číslo>-1 <obec> - dříve <německé jméno>“ s kódem (např. `CHR473018390`). Klik na náhled otevírá novou kartu, kterou
    prohlížeč může zablokovat – otevři ji proto přímo:
    `https://ags.cuzk.gov.cz/archiv/openmap.html?typ=skicic&idrastru=<KÓD>`
    (odkaz najdeš i skriptem: `[...document.querySelectorAll('a[href*=openmap]')].map(a=>a.href)`).
@@ -42,7 +42,7 @@ v `zdroje.md` a prohlížeč `openmap.html` – ten bývá funkční i tehdy; 2)
    „Informace o archiválii…“ rok neuvádí.
 5. Jedno k.ú. může mít víc skic (dvě části, předměstí) – projdi všechny karty.
 6. **Města:** zastavěná část (intravilán) bývá na **zvláštních listech ve větším měřítku**, v prohlížeči jako samostatný
-   blok listů stranou (Česká Třebová: blok vlevo dole s nápisem „Trübau Böhmisch“). Na hlavních listech je na místě
+   blok listů stranou (často vlevo dole, s německým jménem města). Na hlavních listech je na místě
    města prázdné místo.
 
 ## 2. Číst skicu
@@ -74,30 +74,30 @@ v `zdroje.md` a prohlížeč `openmap.html` – ten bývá funkční i tehdy; 2)
 - **Prohlížeč se překresluje jen v kartě, která je vpředu, a jen když je panel prohlížeče zobrazený.** Víc pomocníků
   v jednom prohlížeči se navzájem blokuje (polovina snímků selže) – skici procházej v jednom vlákně. Je to i otázka
   ohleduplnosti: podmínky ČÚZK dovolují zablokovat toho, kdo služby přetěžuje (SKILL.md, Hranice).
-- **Značky na skice** (ověřeno na skicách Národního archivu – Svinná, Přívrat, Česká Třebová):
+- **Značky na skice** (ověřeno na několika skicách Národního archivu z Chrudimského kraje):
   - budova: žlutá = dřevěná, růžová/červená = zděná,
   - **černé číslo v budově = stavební parcela**, **červené číslo v budově = číslo popisné** (vepsané bývá u většiny
-    domů; ve Svinné jen u některých),
+    domů; v některých vsích jen u některých),
   - **„N° 23“** (černě, ručně) na zahradě, dvoře nebo poli = parcela patří k **domu č.p. 23**; u polí často i jméno
-    majitele („Braulík Franz N° 74“),
+    majitele („Novak Franz N° 74“),
   - ostatní **červená čísla** = pozemkové parcely (pole, zahrady, louky, cesty),
-  - velká písmena B, D, E … = trati, tučné jméno („Swynna“) = obec, jména sousedních obcí na okraji,
+  - velká písmena B, D, E … = trati, tučné jméno (německé jméno vsi) = obec, jména sousedních obcí na okraji,
   - modré kroužky a čísla tužkou (šedá, tenká, často škrtnutá) = pozdější úpravy a revize, nečti je jako č.p.;
     vybledlé, ale **perem psané** červené číslo ve stejném rukopisu jako sousední č.p. je původní – pomůže, když
     zapadá do řady sousedních č.p. a dnešní dům na místě nese totéž číslo,
-  - **dvě červená čísla v jedné budově** (Česká Třebová: 409 a menší 450) = pozdější přečíslování; zapiš obě,
-  - **budovy dokreslené později** (Svinná st. 60–64, dnes č.p. 50–53): mívají vyšší čísla st. parcel a žádné č.p.;
+  - **dvě červená čísla v jedné budově** (např. 409 a menší 450) = pozdější přečíslování; zapiš obě,
+  - **budovy dokreslené později** (v jedné vsi st. 60–64, dnes č.p. 50–53): mívají vyšší čísla st. parcel a žádné č.p.;
     shoda dnešního č.p. s takovou parcelou neznamená, že dům na skice to číslo měl.
 - **Než začneš číst, ověř si klíč na dvou třech domech**, které dnes mají stejné č.p. i st. parcelu (`ruian.py st`).
-  Šestajovice: zprvu to vypadalo, že červená čísla jsou pozemky, ale st. 21/22/24/25 = č.p. 22/23/25/26 sedí s dneškem –
+  V jedné vsi to zprvu vypadalo, že červená čísla jsou pozemky, ale st. 21/22/24/25 = č.p. 22/23/25/26 sedí s dneškem –
   červené číslo u budovy je č.p. (a „7“ v rukopisu bývá ve skutečnosti „2“).
-- **Odchylky:** na kouřimské skice (KRM, Šestajovice) jsou červená čísla v zahradách **pozemkové parcely**, č.p. je jen
+- **Odchylky:** na kouřimské skice (KRM) jsou červená čísla v zahradách **pozemkové parcely**, č.p. je jen
   ve dvoře u černého čísla st. parcely. Ve městech bývá červené č.p. psané podél budovy, i vzhůru nohama.
 - **Hledání č.p. ve městě:** č.p. jdou v souvislých řadách podél ulic. Řadu sleduj přes „N° X“ na zahradách při
   `scale` ~5700, pak přibliž na ~2800. Rychlý předtest přes otisk: stála na místě dnešního domu v roce ~1840 budova
   se stejným číslem st. parcely? Když je tam pole, dům je mladší než skica a dnešní č.p. je jediná stopa (C).
 - **Číslo na okraji listu:** sousední listy se na okrajích překrývají – budova u okraje bývá nakreslená na obou.
-  Přečti ji na obou a výsledky spoj (Šestajovice: st. 56 na dvou listech, na každém půlka čísla).
+  Přečti ji na obou a výsledky spoj (st. 56 na dvou listech, na každém půlka čísla).
 - **Vybledlé červené číslo** zvýrazni na snímku – vždy na snímku v čitelném měřítku (2300–4700), z rozmazaného
   snímku při ~1200 zvýraznění nic nevytáhne:
   `magick <snímek.jpg> -crop 200x200+x+y +repage -resize 250% -modulate 100,260 -sigmoidal-contrast 6x50% <výstup.png>`
@@ -106,14 +106,14 @@ v `zdroje.md` a prohlížeč `openmap.html` – ten bývá funkční i tehdy; 2)
 - U čtení si piš i sousedy (č.p. a stavební parcely vedle). Slouží jako kotvy a kontrola.
 
 ## 2b. Kotvy – kde na skice hledat a kde budova ve skutečnosti leží
-Každý list skici má v prohlížeči vlastní měřítko a natočení (Zhoř: sousední listy 0,233 a 0,253 m na jednotku; natočení
+Každý list skici má v prohlížeči vlastní měřítko a natočení (sousední listy jedné skici 0,233 a 0,253 m na jednotku; natočení
 1–2°, jinde i 6–14°). **Kotvy ber ze stejného listu jako cíl** a kolem něj, nikdy přes spoj listů – jinak chyby
 vyskočí na desítky metrů. Na spoji listů bývá mezera a
 budovy rozříznuté. Body spočtené z kotev zapisuj `sjtsk=X,Y bod=kotvy`.
 1. Přečti na skice 3–5 budov, jejichž stavební parcela **dnes existuje** (`ruian.py st <k.ú.> <číslo>`; nejlépe malé
    parcely – u velkých je střed daleko od budovy). Kotvy rozlož do okolí cíle. **Nejlepší kotvy** jsou budovy, u nichž
    jsi na skice přečetl i č.p. a to sedí s dnešním č.p. na téže parcele – číslo parcely mohlo být přiděleno znovu
-   jinde (Zhoř st. 60: chyba 66 m). Parcela s lomítkem (`st. 5` → dnes `5/1`, `5/2`) se bere jako průměr dílů.
+   jinde (v jednom případě chyba 66 m). Parcela s lomítkem (`st. 5` → dnes `5/1`, `5/2`) se bere jako průměr dílů.
 2. Souřadnice prohlížeče skici zjistíš stejným skriptem jako u otisku (§3 bod 4) – v prohlížeči skici vrací
    souřadnice listů (např. `[8183.96, -32617.1]`).
 3. Zapiš do JSON a spusť `kotvy.py <k.ú.> kotvy.json`:
@@ -137,20 +137,20 @@ Snímek obrazovky se uloží jako soubor (cesta je ve výsledku nástroje). Oř�
 Pod výřez vždy zdroj: „Národní archiv, Indikační skici, <kód>, kolem <rok>“.
 
 ### Hledání ve městě – „sleduj řadu“
-Konskripční čísla jdou ve městě v souvislých řadách podél ulic (Česká Třebová: 103 → 116 na západ, 134 → 151 → 165
+Konskripční čísla jdou ve městě v souvislých řadách podél ulic (např. 103 → 116 na západ, 134 → 151 → 165
 → 176 zpět na východ). Najdi známé číslo poblíž, přečti 2–3 sousedy, urči směr a posouvej pohled po řadě
 (`v.center` o kus dál ve směru řady, pak „−“ a „+“ pro načtení). Pole „N° X Jméno“ na okrajích ukazují, kam řada
 pokračuje. Takhle se dá dojít k domu i přes 60 čísel za ~10 obrazovek.
-- **Kotvy podle dnešních č.p.:** kde se čísla st. parcel nezachovala (Žamberk), vezmi za kotvy domy, jejichž č.p. na
+- **Kotvy podle dnešních č.p.:** kde se čísla st. parcel nezachovala (k.ú. nově zmapované), vezmi za kotvy domy, jejichž č.p. na
   skice přečteš a dnes stojí na stejném místě, a zapiš je do `kotvy.py` klíčem `"cp"` místo `"st"`
   (`{"cp": 269, "skica": [x, y]}`; poloha = dnešní adresní bod). I `hledej` umí `"cp"` – ukáže, kde na skice leží dnešní
-  dům s tím číslem. Domy, jejichž dnešní č.p. je jinde (Albertova 270, 292–294), vynech – poznáš je podle velké chyby kotvy
+  dům s tím číslem. Domy, jejichž dnešní č.p. je jinde (číslo přidělené znovu novostavbě), vynech – poznáš je podle velké chyby kotvy
   nebo podle toho, že dnešní dům leží úplně jinde než jeho sousedé ze skice. Kotvy ber z téhož listu jako cíl.
-- **„Dnešní dům stojí na pozemkové parcele“ neznamená vždy nový dům:** v k.ú. s přečíslovanými parcelami (Žamberk) stojí
-  na p.č. i domy z doby skici. Žamberk č.p. 55 a 256 stály 3–8 m od dnešních domů se stejným číslem. `adresy.py` to pozná
+- **„Dnešní dům stojí na pozemkové parcele“ neznamená vždy nový dům:** v k.ú. s přečíslovanými parcelami stojí
+  na p.č. i domy z doby skici. V jednom městě stály takové domy 3–8 m od dnešních domů se stejným číslem. `adresy.py` to pozná
   podle sousedních č.p. a upozorní; rozhodne skica.
-- **Čísla se ve městech přidělovala znovu:** zaniklý dům předá číslo novostavbě i 500–1000 m daleko (ČT 122, 174, 183;
-  Parník 15, 62; Žamberk 270). U měst proto dnešní č.p. bez skici skoro nic neznamená.
+- **Čísla se ve městech přidělovala znovu:** zaniklý dům předá číslo novostavbě i 500–1000 m daleko (ve dvou zkoumaných městech
+  i v jedné vsi se to stalo opakovaně). U měst proto dnešní č.p. bez skici skoro nic neznamená.
 
 ## 3. Císařský otisk – poloha v dnešní mapě
 Otisk = barevná kopie téže mapy, **napasovaná na dnešní souřadnice**. Má stejná čísla stavebních parcel, často bez č.p.
@@ -169,11 +169,11 @@ Otisk = barevná kopie téže mapy, **napasovaná na dnešní souřadnice**. Má
    (`k` počítej ze skutečné šířky snímku – je uvedená u každého snímku.)
 5. **Kotva = kontrola přesnosti.** Stejně přečti střed sousední budovy, jejíž stavební parcela dnes existuje
    a nese stejné č.p.: `ruian.py kotva <k.ú.> <st.> X Y` vypíše vzdálenost od středu dnešní parcely a zda bod
-   leží uvnitř. To je přesnost (Svinná 4–13 m, Přívrat 3–9 m). Je-li kotva posunutá o víc než
+   leží uvnitř. To je přesnost (ve vsích obvykle 3–13 m). Je-li kotva posunutá o víc než
    ~25 m stejným směrem jako okolí, odečti ten posun i od hledaného domu a napiš to do poznámky.
 6. `adresy.py pridej adresy.json id=… sjtsk=X,Y presnost_m=10` → `adresy.py dopln adresy.json`.
 
-**Otisk nemusí pokrývat každé k.ú.** (Dlouhá Třebová: vrstva je zapnutá, ale nekreslí nic – aplikace si stáhne jen popis
+**Otisk nemusí pokrývat každé k.ú.** (některá k.ú.: vrstva je zapnutá, ale nekreslí nic – aplikace si stáhne jen popis
 vrstvy). Pak zbývají kotvy na skice.
 
 ## 4. Kontrola dnešní mapou
@@ -186,10 +186,10 @@ vrstvy). Pak zbývají kotvy na skice.
 - **Město × předměstí:** města měla často oddělená číslování (vnitřní město, předměstí); zkontroluj, ke které skice
   a k.ú. adresa patří.
 - **Číslo evidenční** (č.ev., chaty) není číslo popisné – nástroj je od č.p. odlišuje.
-- **Víc adres se stejným č.p. v jednom k.ú.** (Dolní Lhota × Předměstí): nástroj dá přednost adrese, která obsahuje
+- **Víc adres se stejným č.p. v jednom k.ú.** (osada s vlastním číslováním × sousední ves): nástroj dá přednost adrese, která obsahuje
   jméno obce z pole `obec` – pojmenuj `obec` tak, jak se jmenuje dnešní část obce.
-- **K.ú. bez starých čísel st. parcel** (Žamberk: dnešní parcely přečíslované) – `kotvy.py` nejde použít; kotvy ber
-  ručně z dnešních adresních bodů domů, které na skice přečteš i s č.p., nebo použij otisk.
+- **K.ú. bez starých čísel st. parcel** (dnešní parcely přečíslované) – kotvy se stavebními parcelami nejdou; použij
+  v `kotvy.py` kotvy podle dnešních č.p. (klíč `cp`) – dnešní adresní body domů, které na skice přečteš i s č.p., nebo použij otisk.
 - **Rozdělené parcely** (`st. 2/1`, `2/2`): původní st. 2 se později rozdělila; dům 1840 je některá z částí –
   rozhodni podle tvaru na otisku.
 - Dnešní parcela stejného čísla, ale na úplně jiném místě = číslo bylo přiděleno znovu (k.ú. prošlo novým mapováním).

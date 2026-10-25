@@ -4,7 +4,7 @@
 Prohlížeč indikační skici (openmap.html) má jen vlastní souřadnice listů. V rámci jednoho bloku listů
 (pozor: intravilán měst bývá samostatný blok ve větším měřítku) jsou ale s mapou lineárně svázané.
 Stačí 2 kotvy, lépe 3–5: budovy, které na skice přečteš (stavební parcela) a které dnes existují.
-Kde se čísla stavebních parcel nezachovala (Žamberk, přestavěné čtvrti), použij místo "st" klíč "cp":
+Kde se čísla stavebních parcel nezachovala (k.ú. nově zmapované, přestavěné čtvrti), použij místo "st" klíč "cp":
 dům, jehož č.p. na skice přečteš a který dnes stojí na stejném místě (poloha = dnešní adresní bod).
 
 Použití:

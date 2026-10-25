@@ -39,7 +39,7 @@ prohlížeče skill umí jen část práce (dnešní katastr a mapu).
 ## Použití
 
 Stačí se zeptat, třeba:
-> V matrice mám předky z Přívratu, dům č.p. 68 (křest 1835). Kde ten dům stál?
+> V matrice mám předky z Horní Lhoty, dům č.p. 68 (křest 1835). Kde ten dům stál?
 
 nebo
 > Projdi adresy v mém rodokmenu a udělej mapu domů předků.

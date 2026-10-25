@@ -2,7 +2,7 @@
 """Dotazy do dnešního katastru a adres (RÚIAN, veřejná služba ČÚZK, bez přihlášení).
 
 Použití:
-  ruian.py ku "Svinná"                 katastrální území podle jména (kód k.ú., obec)
+  ruian.py ku "Nová Ves"                 katastrální území podle jména (kód k.ú., obec)
   ruian.py cp <kód k.ú.> <č.p.>         dnešní adresa s tímto číslem popisným v k.ú. (bod)
   ruian.py st <kód k.ú.> <číslo>        dnešní stavební parcela „st. 4“ (i „4/2“): střed, výměra, adresy na ní
   ruian.py bod <lat> <lon>             co je dnes v bodě (parcela, k.ú., nejbližší adresa)
