@@ -84,6 +84,10 @@ Vstup: obec (jak je v matrice), č.p., rok zápisu, kdo tam žil. Ulož si ho hn
    `dnesni_cp=neplati` – v mapě pak bude jen obec (D), ne zavádějící bod.
 6. **Porovnej s rokem.** Skica je z let 1824–1843. Zápis z matriky výrazně starší (před ~1805) nebo mladší (po ~1880)
    může mít jiné číslování – řekni to a navrhni ověření (rok skici vs. rok zápisu; sousední zápisy z matrik; pozemková kniha).
+   **Adresy z 20. století** (zhruba po 1900) neber ze stabilního katastru: dům té doby obvykle stojí dodnes, takže
+   výchozí je dnešní č.p. (`ruian.py cp`, ručně `jistota=A` po kontrole na ortofotu, že dům není novostavba).
+   Skicu otevři jen tehdy, když dnešní dům s tímto číslem zjevně vznikl později (číslo přidělené znovu po zbourání,
+   přečíslování obce) – i pak je skica spíš vodítko než doklad.
 7. **Výstup:** `adresy.py vypis` (přehled) a `mapa.py <složka> adresy.json` (prezentační mapa). Mapu zveřejni
    nástrojem Artifact: `file_path` = `<složka>/index.html`, `files` = obsah `<složka>/files.json` (podklady a výřezy).
    Stránka nesmí načítat cizí dlaždice, proto si podklady ČÚZK stahuje předem (potřebuje ImageMagick); hotová mapa
