@@ -44,7 +44,7 @@ Stačí se zeptat, třeba:
 nebo
 > Projdi adresy v mém rodokmenu a udělej mapu domů předků.
 
-Používáte-li skill **rodokmen** (průvodce rodokmenem z českých matrik od jiného autora), stare-adresy si
+Používáte-li skill **[rodokmen](https://github.com/sarsonj/rodokmen-skill)** (průvodce rodokmenem z českých matrik od jiného autora), stare-adresy si
 umí adresy načíst přímo z jeho projektu (`data/osoby.py`) a mapa domů jde použít i na rodinném webu
 (viz `reference/vystup.md`). Projekt rodokmenu přitom nemění.
 
