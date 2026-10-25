@@ -7,6 +7,12 @@ Obojí je v mapové aplikaci **ČÚZK Archiv** – https://ags.cuzk.gov.cz/archi
 ho nejdřív přes ToolSearch `select:mcp__ccd_view__show_pane`), jinak požádej uživatele o Ctrl+Shift+B / Cmd+Shift+B. Skrytý panel nekreslí: skripty čekají do vypršení, snímky selhávají („page did not
 finish rendering“). Měj otevřenou jen jednu kartu ČÚZK – druhá karta té první bere vykreslování.
 
+**Který prohlížeč:** vestavěný panel bývá nízký (např. 900 × 350 px) – při čitelném měřítku je vidět jen pár domů
+a `resize_window` mapu ArcGIS nezvětší (překreslí se do rohu). Claude in Chrome dá celé okno (1500 × 900) a čte se
+mnohem rychleji; u některých skic (Česká Třebová CHR490018390) ale Chrome při snímku obrazovky zamrzá („renderer frozen“,
+stránka jinak běží) – pak přepni zpět do vestavěného panelu a požádej uživatele, ať ho zvětší. Okno Chromu musí být
+vpředu, jinak snímky selhávají taky.
+
 **Výpadek aplikace:** když panel „Výsledky“ po kliknutí do mapy ani po ~30 s neukáže počty a jen opakuje „Chvilku
 strpení…“ (v konzoli `Failed to load layer 'Klady'`, dotazy vrací 499 Token Required), je problém na straně ČÚZK
 (stalo se 25. 10. 2026 po celodenní práci – možná omezení počtu dotazů). Postup: 1) zkus kód skici v tabulce
@@ -136,8 +142,13 @@ Konskripční čísla jdou ve městě v souvislých řadách podél ulic (Česk�
 (`v.center` o kus dál ve směru řady, pak „−“ a „+“ pro načtení). Pole „N° X Jméno“ na okrajích ukazují, kam řada
 pokračuje. Takhle se dá dojít k domu i přes 60 čísel za ~10 obrazovek.
 - **Kotvy podle dnešních č.p.:** kde se čísla st. parcel nezachovala (Žamberk), vezmi za kotvy domy, jejichž č.p. na
-  skice přečteš a dnes stojí na stejném místě (`ruian.py cp`), a spočítej převod stejně jako `kotvy.py` (funkce
-  `kotvy.fit`, cíle `kotvy.wgs_to_sjtsk`). Domy, jejichž dnešní č.p. je jinde (Albertova 270, 292–294), vynech.
+  skice přečteš a dnes stojí na stejném místě, a zapiš je do `kotvy.py` klíčem `"cp"` místo `"st"`
+  (`{"cp": 269, "skica": [x, y]}`; poloha = dnešní adresní bod). I `hledej` umí `"cp"` – ukáže, kde na skice leží dnešní
+  dům s tím číslem. Domy, jejichž dnešní č.p. je jinde (Albertova 270, 292–294), vynech – poznáš je podle velké chyby kotvy
+  nebo podle toho, že dnešní dům leží úplně jinde než jeho sousedé ze skice. Kotvy ber z téhož listu jako cíl.
+- **„Dnešní dům stojí na pozemkové parcele“ neznamená vždy nový dům:** v k.ú. s přečíslovanými parcelami (Žamberk) stojí
+  na p.č. i domy z doby skici. Žamberk č.p. 55 a 256 stály 3–8 m od dnešních domů se stejným číslem. `adresy.py` to pozná
+  podle sousedních č.p. a upozorní; rozhodne skica.
 - **Čísla se ve městech přidělovala znovu:** zaniklý dům předá číslo novostavbě i 500–1000 m daleko (ČT 122, 174, 183;
   Parník 15, 62; Žamberk 270). U měst proto dnešní č.p. bez skici skoro nic neznamená.
 

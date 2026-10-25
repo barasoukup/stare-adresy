@@ -19,7 +19,7 @@ parcela „st.“, 2 = pozemková), `katastralniuzemi`, `vymeraparcely`; Adresni
 |---|---|---|---|
 | Svinná u České Třebové (671703) | CHR473018390 | 1839 | |
 | Přívrat (736384) | CHR360018380 | 1838 | |
-| Česká Třebová (621757) | CHR490018390 | 1839 | město na zvláštních listech vlevo dole |
+| Česká Třebová (621757) | CHR490018390 | 1839 | město na zvláštních listech vlevo dole; okolí Nového náměstí (č.p. 168–176) v prohlížeči kolem x 3300–4800, y −32600…−33200 (dva listy, nepřekrývají se) |
 | Parník (621820) | CHR318018390 | 1839 | |
 | Kozlov u České Třebové (671690) | CHR210018390 | 1839 | ves na rohu listů |
 | Dlouhá Třebová (626503) | CHR226018390 | 1839 | otisk tu nenačítá |
@@ -28,7 +28,7 @@ parcela „st.“, 2 = pozemková), `katastralniuzemi`, `vymeraparcely`; Adresni
 | Hylváty (775339) | CHR139018390 | 1839 | |
 | Předměstí (734322) – i Dolní Lhota | CHR355018390 | 1839 | víc osad na jedné skice |
 | Svojanov (761141) | CHR470018390 | 1839 | |
-| Žamberk (794368) | HRA447018400 | 1840 | město na zvláštních listech |
+| Žamberk (794368) | HRA447018400 | 1840 | město na zvláštních listech („Stadt Senftenberg“, blok vlevo dole); dnešní st. parcely přečíslované. Souřadnice prohlížeče: kostel sv. Václava a Nádražní/Kostelní (č.p. 52–70) x 1700–2600, y −31700…−32300; Jiráskovo nám. (č.p. 250–273) x 3400–3900, y −29600…−30000; východní okraj u Tyršovy (č.p. 286–308) x 4700–5200, y −30300…−31000 |
 | Šestajovice u Prahy (762385) | KRM346018410 | 1841 | ves na rohu 4 listů |
 | Ostrov u Lanškrouna (715999) | CHR276018390 | 1839 | „Michelsdorf“ |
 | Dolní Libchavy (629553) | CHR252018390 | 1839 | |

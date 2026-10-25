@@ -174,8 +174,16 @@ def urci(e):
             par = ruian.parcela_pod(dn[0]["lat"], dn[0]["lon"])
             e["dnes"]["parcela"] = par
             if par and par.startswith("p.č."):
-                notes.append(f"dnešní dům stojí na pozemkové parcele ({par}) – vznikl nejspíš až po stabilním katastru, "
-                             "starý dům stál jinde")
+                # V k.ú. s přečíslovanými parcelami (Žamberk) stojí na p.č. i staré domy – pak to nic neznamená.
+                sous = [ruian.parcela_pod(a["lat"], a["lon"]) for c in (int(e["cp"]) - 1, int(e["cp"]) + 1) if c > 0
+                        for a in ruian.cp(e["ku_kod"], c)[:1]]
+                if sous and all(s and s.startswith("p.č.") for s in sous):
+                    notes.append(f"dnešní dům stojí na pozemkové parcele ({par}), ale stejně i sousední č.p. – parcely tu "
+                                 "byly nejspíš přečíslovány (jako v Žamberku), o stáří domu to nic neříká; ověř na skice "
+                                 "a polohu spočítej z kotev podle dnešních č.p. (kotvy.py, klíč „cp“)")
+                else:
+                    notes.append(f"dnešní dům stojí na pozemkové parcele ({par}) – vznikl nejspíš až po stabilním katastru, "
+                                 "starý dům stál jinde")
             elif par:
                 notes.append(f"dnešní dům stojí na {par} – ověř na skice, zda tam ~1840 stála budova se stejnou st. parcelou "
                              "(vysoké číslo st. parcely = spíš novější stavba)")

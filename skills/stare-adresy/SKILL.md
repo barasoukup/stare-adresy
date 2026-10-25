@@ -30,7 +30,7 @@ Nástroje jsou jen standardní knihovna Pythonu ≥ 3.9 a volají veřejné slu�
 | `ruian.py bod <lat> <lon>` / `bod --sjtsk X Y` | co je dnes v bodě (parcela, nejbližší adresy); S-JTSK = souřadnice z aplikace ČÚZK Archiv |
 | `ruian.py okoli <lat> <lon> [m]` | stavební parcely a č.p. v okolí |
 | `ruian.py kotva <k.ú.> <st.> X Y` | přesnost otisku: bod přečtený na otisku vs. dnešní parcela |
-| `kotvy.py <k.ú.> <soubor.json>` | převod souřadnic prohlížeče skici ↔ mapa podle 3–5 kotev: kde na skice hledat dnešní parcelu, nebo kde ve skutečnosti leží budova ze skici |
+| `kotvy.py <k.ú.> <soubor.json>` | převod souřadnic prohlížeče skici ↔ mapa podle 3–5 kotev (stavební parcela `st`, nebo dnešní č.p. `cp` tam, kde jsou parcely přečíslované): kde na skice hledat dnešní parcelu/dům, nebo kde ve skutečnosti leží budova ze skici |
 | `adresy.py nova/pridej/dopln/vypis <soubor.json>` | seznam adres a výpočet polohy (viz `adresy.py` bez parametrů) |
 | `mapa.py <výstupní složka> <adresy.json>` | prezentační mapa pro uživatele (podklad ČÚZK, výřezy skic) – index.html + files.json k publikování + `domy.geojson` pro jiné aplikace |
 | `z_rodokmenu.py <projekt rodokmenu> <adresy.json>` | načte adresy „obec čp. X“ z projektu skillu rodokmen (osoby.py, mista.json) |
