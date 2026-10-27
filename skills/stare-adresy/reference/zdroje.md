@@ -36,12 +36,29 @@ parcela „st.“, 2 = pozemková), `katastralniuzemi`, `vymeraparcely`; Adresni
 | Koldín (668036) | HRA200018390 | 1839 | |
 | Krumsín (675202) | MOR116918340 | 1834 | MZA: mza.cz/indikacniskici/skica/detail/MOR116918340 |
 | Zhoř u České Třebové (792900) | CHR566018390 | 1839 | sign. NA 9254-1 |
+| Čtyřkoly (624331) | BER426018400 | 1840 | „Vierrad“; osada Javorník (téže k.ú.) na skenu chybí – jen na císařském otisku |
+| Lštění (624357) | BER247018400 | 1840 | i osada Dubsko (dnes k.ú. Přestavlky u Čerčan, jiná čísla parcel); revize BER247018720 (1872) |
+| Přestavlky u Čerčan (735191) | KRM317018410 | 1841 | silně opravovaná |
+| Chříč (654558) | RAK171018410 | 1841 | „Křzitz“ |
+| Lhota u Chříče (654566) | RAK182018410 | 1841 | |
+| Studená u Chříče (654582) | RAK339018410 | 1841 | |
+| Příčina (735825) | RAK273018410 | 1841 | |
+| Všesulov (787477) | RAK306018410 | 1841 | č.p. u budov nevepsána, parcely dnes přečíslované |
+| Petrovice u Rakovníka (719927) | RAK252018410 | 1841 | silně revidovaná |
+| Mělník (692816) | BOL308018420 | 1842 | i předměstí a osady Podolí, Okrouhlík, Rybáře, Chloumek |
 
 **Jiné cesty ke kódu (ověřeno 25. 10. 2026):** veřejný seznam kódů pro Čechy neexistuje. Kód (CHR/HRA/KRM… + číslo + rok)
 nejde odvodit – prostřední číslo neodpovídá abecedě ani signatuře; **kódy nezkoušej naslepo** (byl by to průzkum služby
 mimo aplikaci). Signatura Národního archivu („<číslo>-1 <obec>“, řazeno abecedně podle německého jména obce) se hodí pro objednávku skenu u NA (`digi.nacr.cz/formis/formular.php?sign=<signatura>`),
 ne pro prohlížeč. Morava: veřejný seznam MZA podle písmen (`mza.cz/indikacniskici/skica/?letter=S`). Jinak jen
 vyhledání v aplikaci Archiv – při výpadku počkat (25. 10. 2026 trval výpadek vyhledávání asi 1–2 hodiny).
+
+## Pozdější zdroje pro novodobé adresy (ověřeno 27. 10. 2026)
+| Co | Kde | Poznámka |
+|---|---|---|
+| Adresáře měst (Adressbuch) – seznam domů podle č.p. s ulicí a majitelem, seznam ulic s č.p. | GenWiki `wiki.genealogy.net/<Město>/Adressbuch_<rok>` → odkaz „Digitalisat“; Martin-Opitz-Bibliothek `digital.martin-opitz-bibliothek.de` (vyhledávání, prohlížeč Kitodo) | sudetská města (Ústí 1926 i s okresem a městskými částmi). Strany lze otevřít jako obrázek IIIF: `…/?eID=tx_dlf_pageview_restriction_proxy&use=thumbnails&url=http%3A%2F%2F127.0.0.1%3A8182%2Fiiif%2F2%2F<id>_volume%252F<00094>_<id>.jpg%2Fpct%3A0%2C0%2C100%2C52%2F1400%2C%2F0%2Fdefault.jpg` (výřez horní poloviny, šířka 1400) – čti po jednotlivých stranách, ne hromadně |
+| Sčítací operáty 1921 | FamilySearch (katalog podle okresu) | čísla domů s ulicí; vyžaduje přihlášení |
+| Státní mapa 1 : 5 000 (1951–2000), Mapa evidence nemovitostí | ČÚZK Archiv (vrstva / `openmap.html?typ=sm5…`, `typ=menkyc…`) | **bez č.p.** – jen obrysy budov, čísla parcel a popisy částí obcí (pomůže umístit osadu/předměstí) |
 
 Starý web archivnimapy.cuzk.cz / .gov.cz už neexistuje (DNS nenalezeno) – nepoužívej staré návody s ním.
 

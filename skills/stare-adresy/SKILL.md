@@ -38,8 +38,10 @@ Nástroje jsou jen standardní knihovna Pythonu ≥ 3.9 a volají veřejné slu�
 ## Odkud vzít adresy
 - Uživatel je napíše (obec, č.p., rok, kdo tam žil).
 - **Projekt skillu rodokmen** (složka s `data/osoby.py`): `z_rodokmenu.py <projekt> adresy.json` vytáhne všechny
-  zmínky „obec čp. X“ do roku 1925 i s osobami a roky a doplní katastrální území. Projekt rodokmenu nemění. Výsledek
-  ukaž uživateli a projdi s ním položky `obec_overit` a `ku_kandidati` (nejasné obce, stejnojmenná k.ú.). Po hotovém
+  zmínky „obec čp. X“ (z celé doby; novodobé označí `novodobe`) i s osobami a roky a doplní katastrální území.
+  Projekt rodokmenu nemění. Výsledek ukaž uživateli a projdi s ním položky `obec_overit` a `ku_kandidati` (nejasné
+  obce, skloněné tvary jako „v Lhotách“ – sjednoť se základním tvarem, stejnojmenná k.ú.). Adresy bývají i jen
+  v přepisech zápisů (bydliště snoubenců, dům porodu) a ne u osob – zeptej se, zda je projekt má u osob doplněné. Po hotovém
   geokódování mu řekni, že `domy.geojson` z `mapa.py` lze použít i v mapě rodinného webu (`reference/vystup.md`).
 
 ## Postup pro jednu adresu
@@ -62,6 +64,11 @@ Vstup: obec (jak je v matrice), č.p., rok zápisu, kdo tam žil. Ulož si ho hn
    mají stejné č.p. i st. parcelu (`ruian.py st`) – kraje se liší (`reference/skicy.md`, „Odchylky“).
    Přečti stavební parcelu (`stp=`) a **č.p., které na skice opravdu vidíš (`skica_cp=`)** – bez něj nástroj dá nejvýš B
    (shoda jen přes číslo parcely). Nejisté čtení zapiš do `cteni="…"` (ukáže se v mapě). Pak okolí (cesta, potok, kaple, sousední č.p.). Udělej výřez (`reference/skicy.md`).
+   **Trojmístné číslo u budovy ve městě není automaticky parcela:** červené číslo ve dvoře nebo v budově vedle černého
+   čísla stavební parcely je č.p., i když „vypadá“ jako číslo pozemku – vždy porovnej barvu a polohu s ověřenými sousedy.
+   **Jména u polí** („N° 6 Novák Jos.“) jsou majitelé v době skici – výborná kontrola, že č.p. z matriky patří té rodině.
+   **Ves chybí na skice svého k.ú.** (list ve skenu chybí, osada zakreslená na skice sousední obce): projdi skici
+   sousedních k.ú. (`reference/skicy.md` §1) a císařský otisk – bývá úplnější.
    Při nejistotě čtení si přibliž víc, nehádej. **Kde hledat:** začni u dnešního domu se stejným č.p. (`ruian.py cp`)
    – často tam je; jinak čti sousední čísla, číslování jde obvykle po jedné straně vsi. Ve velké vsi nebo městě si
    nejdřív udělej kotvy (`kotvy.py`, `reference/skicy.md` §2b) – pak víš přesně, kam se na skice podívat.
@@ -87,7 +94,8 @@ Vstup: obec (jak je v matrice), č.p., rok zápisu, kdo tam žil. Ulož si ho hn
    **Adresy z 20. století** (zhruba po 1900) neber ze stabilního katastru: dům té doby obvykle stojí dodnes, takže
    výchozí je dnešní č.p. (`ruian.py cp`, ručně `jistota=A` po kontrole na ortofotu, že dům není novostavba).
    Skicu otevři jen tehdy, když dnešní dům s tímto číslem zjevně vznikl později (číslo přidělené znovu po zbourání,
-   přečíslování obce) – i pak je skica spíš vodítko než doklad.
+   přečíslování obce) – i pak je skica spíš vodítko než doklad. Postup pro novodobé adresy viz níže
+   („Adresy po roce ~1880“). Starší adresy (do ~1880) zkoušej přes skicu i tehdy, když dnešní č.p. nesedí.
 7. **Výstup:** `adresy.py vypis` (přehled) a `mapa.py <složka> adresy.json` (prezentační mapa). Mapu zveřejni
    nástrojem Artifact: `file_path` = `<složka>/index.html`, `files` = obsah `<složka>/files.json` (podklady a výřezy).
    Stránka nesmí načítat cizí dlaždice, proto si podklady ČÚZK stahuje předem (potřebuje ImageMagick); hotová mapa
@@ -97,11 +105,37 @@ Vstup: obec (jak je v matrice), č.p., rok zápisu, kdo tam žil. Ulož si ho hn
    Pro jiné aplikace (rodinný web) je `<složka>/domy.geojson` (formát `reference/vystup.md`). Čáry k dnešním domům se
    stejným č.p. jsou jen pro ladění (`mapa.py … --posuny`) – uživatele matou, posun je popsaný v textu u domu.
 
+## Adresy po roce ~1880 (novodobé, `novodobe: true` ze `z_rodokmenu.py`)
+Skica je pro ně stará; dům ale často stál ještě v 1. polovině 20. století a pomohou pozdější zdroje:
+1. **Dnešní č.p.** (`ruian.py cp`) → zatím **C**. Ve městech s ulicemi zápis často uvádí i ulici („Nádražní ul.“).
+2. **Adresář města** z doby kolem zápisu (Adressbuch, Adresář). Obsahuje (a) **seznam domů podle č.p.** po částech
+   města s ulicí a majitelem a (b) **seznam ulic s čísly popisnými**. Ztotožnění ulice: vezmi z adresáře *ostatní* č.p.
+   téže staré ulice a podívej se, kde dnes stojí (`ruian.py cp`) – stojí-li většina v jedné dnešní ulici, je to ona
+   (přejmenování). Dnešní dům se stejným č.p. ve stejné (přejmenované) ulici → **A**; dům zanikl → bod na místě v té
+   ulici (**B/C** podle opory) a zdroj do `poznamka`. Kde adresáře hledat: `reference/zdroje.md`.
+3. **Dům dnes neexistuje:** neumisťuj ho jen podle mezery v číselné řadě. Zkontroluj strukturu dnešní katastrální mapy:
+   zbořená řada domů zanechá úzké parcely domů a zahrádek; velký nepravidelný pozemek tam řadu nepodporuje. Bez opory
+   zůstává **D** (jen obec) s vysvětlením.
+4. **Co nepomáhá** (ověřeno 27. 10. 2026): Státní mapa 1 : 5 000 (vydání 1951–1988) a Mapa evidence nemovitostí mají
+   jen obrysy a čísla parcel, **ne č.p.**; samostatné listy císařského otisku (`openmap.html?typ=cioc…`) jsou stav
+   ~1840 bez dodatků. Pozdější revize skic (reambulace 1869–1881) má jen část k.ú. – v seznamu skic v aplikaci Archiv
+   je pak druhý kód s jiným rokem (např. `…018720`).
+
+## Místa, kde známe jen obec
+Uživatelé chtějí v mapě i předky, u nichž je jen obec bez č.p. („rodem z Nové Vsi“). Zapiš je jako samostatný záznam
+`id=<obec>-obec obec=…` bez `cp`, `ku_kod=…`, `lat/lon` = střed k.ú., `metoda=obec jistota=D` a v `osoby` všechny lidi
+z té obce (jeden bod na obec). Nezdvojuj obec, kde už dům téže osoby je. Nejisté obce (s „(?)“, nejasné ztotožnění,
+mimo ČR) do mapy nedávej – vypiš je uživateli k rozhodnutí.
+
 ## Míra jistoty (pole `jistota`)
 - **A** – č.p. přečtené na skice a dnešní dům s tímto č.p. stojí na téže parcele nebo do 30 m (nebo ručně potvrzeno).
 - **B** – poloha ze skici / otisku, ale dnešní stav je jiný (dům zanikl, číslo se přesunulo). Uveď přesnost.
 - **C** – jen dnešní č.p., skica nepřečtena. Platí často, ale není to doklad.
-- **D** – jen obec (střed k.ú.).
+- **D** – jen obec (střed k.ú.), nebo jen část obce (osada, předměstí – bod na popisu části v mapě, `presnost_m`).
+
+**Víc částí obce v jednom k.ú.** (ves + osady se stejnými č.p.): `dopln` vybírá adresu podle jména v poli `obec`
+(„Osada 6, … Obec“ vs. „č.p. 6, … Obec“). Pojmenuj `obec` jako dnešní část obce; když nástroj napíše „NEJSPÍŠ JINÁ
+ČÁST OBCE“, dnešní č.p. patří jiné osadě – nepoužívej ho (`dnesni_cp=neplati`).
 
 ## Co zapsat k adrese (`adresy.json`)
 `id, obec, cp, rok, osoby, ku_kod, skica, skica_rok, stp, skica_cp, cteni, sjtsk, bod, presnost_m, vyrez, poznamka`

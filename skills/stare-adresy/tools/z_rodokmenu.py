@@ -1,14 +1,16 @@
 #!/usr/bin/env python3
 """Načte adresy „obec čp. X“ z projektu skillu rodokmen do seznamu adres (adresy.json).
 
-Použití: z_rodokmenu.py <složka projektu rodokmenu> <adresy.json> [--od 1700] [--do 1925]
+Použití: z_rodokmenu.py <složka projektu rodokmenu> <adresy.json> [--od 1700] [--do 9999]
 
 Čte `data/osoby.py` (předci P, příbuzní SIDE) – soubor se NEspouští, jen se rozebere (ast) – a z faktů `f`, textů `t`
 a poznámek vybere zmínky „<obec> čp. <číslo>“ s rokem a osobou. Skloněné tvary obcí („v Lhotě“, „z Dlouhé
 Vsi“) převede podle `data/mista.json` (pole `re`) na základní název; co nepozná, označí `obec_overit`.
 Katastrální území doplní, je-li jednoznačné (jinak `ku_kandidati`). Existující adresy doplní (osoby, rok), nic nemaže.
 
-Zmínky po roce --do (výchozí 1925) přeskočí: skici jsou z let 1824–1843 a mladší adresy patří často žijícím lidem.
+Bere zmínky z celé doby (horní hranici lze dát --do). Adresy po roce 1880 dostanou `novodobe: true` – ty se
+ztotožňují jinak než skicou (dnešní č.p. + ověření ulice v adresáři, SKILL.md krok 6). Obce, které nepozná, nevynechá:
+zapíše je s `obec_overit` (skloněný tvar z textu – „v Lhotách“ – sjednoť ručně se základním tvarem).
 Projekt rodokmenu nemění.
 """
 import ast, json, os, re, sys, unicodedata
@@ -115,7 +117,7 @@ def main(argv):
         print(__doc__); return
     proj, out = argv[1], argv[2]
     od = int(argv[argv.index("--od") + 1]) if "--od" in argv else 1700
-    do = int(argv[argv.index("--do") + 1]) if "--do" in argv else 1925
+    do = int(argv[argv.index("--do") + 1]) if "--do" in argv else 9999
     mista_p = os.path.join(proj, "data", "mista.json")
     mista = json.load(open(mista_p, encoding="utf-8")) if os.path.exists(mista_p) else {}
     pat = [(name, re.compile(e["re"])) for name, e in mista.items() if e.get("re")]
@@ -174,6 +176,8 @@ def main(argv):
         stare = [o.strip() for o in (e.get("osoby") or "").split(";") if o.strip()]
         e["osoby"] = "; ".join(stare + [o for o in z["osoby"] if o not in stare])
         e["zdroj_rodokmen"] = z["texty"][:5]
+        if z["roky"] and max(z["roky"]) > 1880:
+            e["novodobe"] = True
         if not z["znamo"]:
             e["obec_overit"] = "název obce z textu – ověř základní tvar (není v mista.json ani v RÚIAN)"
         if "ku_kod" not in e:

@@ -9,7 +9,7 @@ Vlastnosti bodu (`properties`), chybějící hodnoty se vynechávají:
 | pole | význam |
 |---|---|
 | `id` | klíč adresy (`nova-ves-46`) |
-| `obec`, `cp` | obec a číslo popisné, jak je v matrice |
+| `obec`, `cp` | obec a číslo popisné, jak je v matrice; bez `cp` = předek, u něhož známe jen obec (jistota D, bod obce) |
 | `rok` | rok zápisu v matrice (nejstarší) |
 | `osoby` | kdo tam žil (text) |
 | `jistota` | `A` jistá poloha · `B` podle skici, dnes jinak / č.p. nepřečteno · `C` jen dnešní č.p. · `D` jen obec |

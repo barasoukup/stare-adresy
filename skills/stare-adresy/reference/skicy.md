@@ -18,6 +18,13 @@ strpení…“ (v konzoli `Failed to load layer 'Klady'`, dotazy vrací 499 Toke
 (stalo se 25. 10. 2026 po celodenní práci – možná omezení počtu dotazů). Postup: 1) zkus kód skici v tabulce
 v `zdroje.md` a prohlížeč `openmap.html` – ten bývá funkční i tehdy; 2) když kód neznáš, zapiš adresy jako C s poznámkou
 „skica neověřena – aplikace ČÚZK nedostupná“, řekni to uživateli a nabídni pokračování později. Klíč neobcházej.
+Výpadek 27. 10. 2026 trval několik hodin a po něm vše fungovalo; vrstva otisků a Státní mapy se večer zase přestala
+načítat (`loadStatus: "loading"` bez konce) – zkus to znovu později, ne ve smyčce.
+
+**Session není otevřená v okně** (`show_pane` hlásí „isn't open in any window“): prohlížeč pak kreslí jen zmenšený
+náhled a čísla nejdou přečíst. Řekni uživateli, ať okno se session otevře; do té doby dělej jen práci bez skic
+(RÚIAN, adresáře). Pomáhá i `resize_window` 1024 × 900 – stránka pak počítá s větším oknem (souřadnice snímku
+přepočítávej přes `innerWidth/800`).
 
 ## 1. Najít skicu katastrálního území
 1. Do pole „Najít adresu nebo místo“ napiš název k.ú. nebo dnešní adresu **i s PSČ** a vyber z nabídky položku
@@ -37,10 +44,17 @@ v `zdroje.md` a prohlížeč `openmap.html` – ten bývá funkční i tehdy; 2)
    `ruian.py sjtsk <lat> <lon>`), klikni do mapy, počkej, až zmizí „Chvilku strpení…“, klikni na tlačítko
    Indikační skici (`calcite-button#btn_skicic` – tlačítko existuje až po skončení „Chvilku strpení…“) a vyčti odkazy
    `a[href*=openmap]`. Každý nový kód zapiš do tabulky v `zdroje.md`, ať se příště nemusí hledat.
+   **Pozor na staré odkazy:** panel Výsledky po novém kliknutí do mapy nemusí obnovit seznam – staré `a[href*=openmap]`
+   zůstanou a vrátí kód předchozí obce. Spolehlivě: před kliknutím přepni panel na záložku „Výsledky“, po kliknutí čekej,
+   až zmizí „Chvilku strpení…“, a ověř název karty (`document.body.innerText.match(/\d{3,5}-\d+ [^\n]+/g)` → „1046-1
+   Čtyřkoly - dříve Vierrad“), že patří hledané obci. Stejným tlačítkem (`#btnSm5`, `#btnOrm` …) se vypíšou i jiné
+   archiválie bodu.
 4. Rok skici je na titulním listu (levý horní list, „…1838“). Kód ho obsahuje: prefix kraje + číslo + **rok** + 0
    (CHR3600**1838**0, HRA4470**1840**0, KRM3460**1841**0, MOR1169**1834**0) – u důležitých adres ověř na titulním listu.
    „Informace o archiválii…“ rok neuvádí.
-5. Jedno k.ú. může mít víc skic (dvě části, předměstí) – projdi všechny karty.
+5. Jedno k.ú. může mít víc skic (dvě části, předměstí, pozdější revize s jiným rokem v kódu) – projdi všechny karty.
+   Osada dnešního k.ú. může být zakreslená na skice **sousední** obce (dříve patřila k ní) a naopak list skici může
+   ve skenu chybět – pak zbývá císařský otisk (§3) nebo skica sousedního k.ú.
 6. **Města:** zastavěná část (intravilán) bývá na **zvláštních listech ve větším měřítku**, v prohlížeči jako samostatný
    blok listů stranou (často vlevo dole, s německým jménem města). Na hlavních listech je na místě
    města prázdné místo.

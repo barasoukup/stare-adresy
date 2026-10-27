@@ -76,11 +76,22 @@ def _dnes(adresy, cp):
 
 
 def _dnes_cp(ku, cp, obec):
-    """Dnešní adresní místo s č.p. v k.ú.; při více částech obce dá přednost té, jejíž jméno je v adrese."""
+    """Dnešní adresní místo s č.p. v k.ú.; při více částech obce dá přednost té, která se jmenuje jako obec.
+
+    Adresa části obce je „Část 6, 25722 Obec“, adresa hlavní části „č.p. 6, 25722 Obec“ – jméno obce je v obou
+    (za PSČ), proto se rozhoduje podle začátku adresy: nejdřív „<obec> 6, …“, pak „č.p. 6, … <obec>“, pak ostatní."""
     dn = ruian.cp(ku, cp)
     if obec:
         jm = obec.split(" (")[0].lower()
-        dn.sort(key=lambda a: jm not in a["adresa"].lower())
+
+        def poradi(a):
+            zac = a["adresa"].split(",")[0].lower()
+            if zac.startswith(jm):
+                return 0
+            if zac.startswith("č.p.") and jm in a["adresa"].lower():
+                return 1
+            return 2
+        dn.sort(key=poradi)
     return dn
 
 
@@ -170,7 +181,13 @@ def urci(e):
             e.update(lat=dn[0]["lat"], lon=dn[0]["lon"], metoda="dnesni_cp", jistota="C",
                      dnes={"adresy": [a["adresa"] for a in dn], "stejne_cp": True})
             if len(dn) > 1:
-                notes.append(f"v k.ú. je víc adres s tímto č.p. – vybráno {dn[0]['adresa']}")
+                jm = (e.get("obec") or "").split(" (")[0].lower()
+                zac = dn[0]["adresa"].split(",")[0].lower()
+                if jm and not zac.startswith(jm) and not zac.startswith("č.p."):
+                    notes.append(f"v k.ú. je víc adres s tímto č.p. a žádná nenese jméno obce „{e.get('obec')}“ – "
+                                 f"vybráno {dn[0]['adresa']}, NEJSPÍŠ JINÁ ČÁST OBCE: ověř, případně dnesni_cp=neplati")
+                else:
+                    notes.append(f"v k.ú. je víc adres s tímto č.p. – vybráno {dn[0]['adresa']}")
             par = ruian.parcela_pod(dn[0]["lat"], dn[0]["lon"])
             e["dnes"]["parcela"] = par
             if par and par.startswith("p.č."):
