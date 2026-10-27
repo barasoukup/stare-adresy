@@ -1,6 +1,6 @@
 {
   "name": "stare-adresy",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "Geokodér starých adres z matrik: kde stál dům „obec + č.p.“ podle indikačních skic a císařských otisků stabilního katastru (1824–1843), porovnání s dnešním katastrem RÚIAN, mapa s výřezy skic.",
   "author": { "name": "barasoukup", "url": "https://github.com/barasoukup" },
   "homepage": "https://github.com/barasoukup/stare-adresy",
