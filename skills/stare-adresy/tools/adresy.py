@@ -11,6 +11,7 @@ Použití:
         lat=49.89 lon=16.38 metoda=ručně              (ruční poloha)
         dnesni_cp=neplati                              (dnešní dům s tímto č.p. prokazatelně není ten starý)
         cast="Město"                                   (část obce s vlastním číslováním, např. „č. 97 město“ v zápisu)
+        vyrez_popis="…"                                (popisek pod výřezem, např. když výřez ukazuje prázdné místo)
   adresy.py dopln <soubor.json> [--znovu]       dopočítá polohu všem adresám bez souřadnic (--znovu: všem)
   adresy.py vypis <soubor.json>                 přehled s jistotou
   adresy.py mapa <soubor.json> [mapa.html]      mapa (Leaflet) + GeoJSON vedle souboru
@@ -278,8 +279,20 @@ def urci(e):
     return "chybí ku_kod (zjisti: ruian.py ku \"Obec\")"
 
 
+def pripoj_vyrezy(path, data):
+    """Adresám bez pole `vyrez` připojí výřez `vyrezy/<id>.jpg`, pokud vedle adresy.json existuje."""
+    slozka = os.path.dirname(os.path.abspath(path))
+    for e in data:
+        rel = f"vyrezy/{e['id']}.jpg"
+        if not e.get("vyrez") and os.path.exists(os.path.join(slozka, rel)):
+            e["vyrez"] = rel
+            print(f"{e['id']:<24} připojen výřez {rel}")
+
+
 def dopln(path, znovu=False):
     data = load(path)
+    pripoj_vyrezy(path, data)
+    save(path, data)
     for e in data:
         if e.get("lat") is not None and not znovu:
             continue
@@ -350,6 +363,7 @@ for (const e of DATA) {
   if (e.zjisteni && e.zjisteni.length) h += `<div><small>${esc(e.zjisteni.join('; '))}</small></div>`;
   if (e.poznamka) h += `<div>${esc(e.poznamka)}</div>`;
   if (e.vyrez) h += `<img src="${esc(e.vyrez)}" alt="výřez indikační skici">`;
+  if (e.vyrez && e.vyrez_popis) h += `<div><small>${esc(e.vyrez_popis)}</small></div>`;
   if (e.skica) h += `<div><a href="https://ags.cuzk.gov.cz/archiv/openmap.html?typ=skicic&idrastru=${encodeURIComponent(e.skica)}" target="_blank" rel="noopener">indikační skica (ČÚZK Archiv)</a></div>`;
   m.bindPopup(h + '</div>');
   m.bindTooltip(`${esc(e.obec)} ${esc(e.cp)}`);

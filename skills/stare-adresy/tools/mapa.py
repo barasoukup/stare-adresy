@@ -92,7 +92,7 @@ def bbox(pts, margin_m):
 def domy_geojson(data):
     """Body domů ve formátu pro jiné aplikace (reference/vystup.md)."""
     pole = ("id", "obec", "cp", "rok", "osoby", "jistota", "metoda", "skica", "skica_rok", "stp", "cteni", "vyrez",
-            "poznamka", "presnost_m")
+            "vyrez_popis", "poznamka", "presnost_m")
     feats = []
     for e in data:
         if e.get("lat") is None:

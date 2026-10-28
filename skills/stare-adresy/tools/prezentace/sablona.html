@@ -53,6 +53,7 @@ select { font: inherit; font-size: .85rem; padding: 3px 6px; border: 1px solid v
 .osoby { font-style: italic; font-family: var(--display); }
 .zj { font-size: .84rem; }
 .warn { font-size: .82rem; color: var(--jC); font-weight: 600; }
+.vyrez-popis { margin: 2px 0 0; font-size: 12px; color: var(--muted, #555); }
 .thumb { margin-top: 4px; max-width: 100%; width: 260px; border-radius: 4px; border: 1px solid var(--line); display: block; }
 main { position: relative; min-width: 0; min-height: 0; }
 #map { position: absolute; inset: 0; background: var(--map-bg); }
@@ -168,6 +169,7 @@ function popupHtml(e) {
   if (posun(e)) h += `<div>Dnešní dům s tímto číslem (${esc(e.dnes.cp_adresa)}) stojí ${esc(e.dnes.cp_vzdalenost_m)} m odtud – číslo bylo později přeneseno.</div>`;
   if (e.zjisteni && e.zjisteni.length) h += `<div>${esc(e.zjisteni.join("; "))}</div>`;
   if (e.vyrez) h += `<img src="${esc(e.vyrez)}" alt="Výřez indikační skici, ${esc(e.obec)} č.p. ${esc(e.cp)}">`;
+  if (e.vyrez && e.vyrez_popis) h += `<p class="vyrez-popis">${esc(e.vyrez_popis)}</p>`;
   if (e.skica) h += `<div><a href="${skicaUrl(e.skica)}" target="_blank" rel="noopener">otevřít skicu ${esc(e.skica)}${e.skica_rok ? " (" + esc(e.skica_rok) + ")" : ""}</a></div>`;
   return h;
 }

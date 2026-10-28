@@ -207,3 +207,15 @@ vrstvy). Pak zbývají kotvy na skice.
 - **Rozdělené parcely** (`st. 2/1`, `2/2`): původní st. 2 se později rozdělila; dům 1840 je některá z částí –
   rozhodni podle tvaru na otisku.
 - Dnešní parcela stejného čísla, ale na úplně jiném místě = číslo bylo přiděleno znovu (k.ú. prošlo novým mapováním).
+- **Nízké č.p. na nové parcele:** dnešní dům s nízkým číslem (např. č.p. 21) stojí na st. parcele, jaká v roce 1839 ještě
+  nebyla (vyšší než čísla st. parcel na skice dané vsi), a na jeho místě je na skice pole. Takové č.p. ale v roce 1839
+  existovalo – starý dům stál jinde a číslo se přeneslo na novostavbu. Hledej ho podle pořadí čísel (sousední č.p., pole
+  „N° X“) a dnešní polohu nepoužívej jako doklad. Totéž u číselného souseda dnešní novostavby, který na skice nesedí.
+- **Čísla domů jen do určité výše:** zjisti, kam v roce 1839 číslování sahalo (nejvyšší „N° X“ na skice). Je-li hledané
+  č.p. vyšší, dům vznikl až po skice – dnešní poloha je pak rozumná (C) a skica ji nepotvrdí ani nevyvrátí.
+- **K.ú. s přečíslovanými parcelami a bez otisku:** kotvy podle staveb, které stojí dodnes – kostely, kaple, hřbitovní
+  zdi (Mělník: kostely na Chloumečku a Chloumku). Kontrola: běžné listy 1 : 2880 mají v prohlížeči kolem 0,24–0,25 m na
+  jednotku a natočení −5 až −9°, městské bloky ve větším měřítku kolem 0,09 m. Výrazně jiné měřítko (0,17, 0,47)
+  nebo natočení (−24°, 148°) = špatná kotva (přečíslovaná parcela, jiný list) nebo kotvy v jedné řadě.
+- **Server se brání:** když prohlížeč skic po desítkách přiblížení najednou posílá jen rozmazané náhledy nebo prázdný
+  obraz a nové požadavky nepřibývají, přestaň a pokračuj později – podmínky ČÚZK zakazují služby přetěžovat.

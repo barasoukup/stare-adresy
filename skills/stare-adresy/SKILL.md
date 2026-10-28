@@ -103,7 +103,9 @@ Vstup: obec (jak je v matrice), č.p., rok zápisu, kdo tam žil. Ulož si ho hn
 7. **Výstup:** `adresy.py vypis` (přehled) a `mapa.py <složka> adresy.json` (prezentační mapa). Mapu zveřejni
    nástrojem Artifact: `file_path` = `<složka>/index.html`, `files` = obsah `<složka>/files.json` (podklady a výřezy).
    Stránka nesmí načítat cizí dlaždice, proto si podklady ČÚZK stahuje předem (potřebuje ImageMagick); hotová mapa
-   má kolem 20 MB na 70 adres. Výřezy skic ukládej do `vyrezy/` vedle adresy.json (`vyrez=vyrezy/<id>.jpg`).
+   má kolem 20 MB na 70 adres. Výřezy skic ukládej do `vyrezy/<id>.jpg` vedle adresy.json – `dopln` je k adrese připojí sám (pole `vyrez`).
+   Výřez, který ukazuje **prázdné místo** (dnešní dům stojí tam, kde 1839 bylo pole), musí to říct:
+   `vyrez_popis="Místo dnešního domu – v roce 1839 tu bylo pole, dům nestál"`. Bez popisku čtenář výřez bere jako nalezený dům.
    Výstupní složku dej do pracovní složky projektu (Artifact přijímá jen soubory pod ní nebo ve scratchpadu);
    `<složka>/cache/` jsou stažené dlaždice – nepublikují se, `files.json` je nezahrnuje.
    Pro jiné aplikace (rodinný web) je `<složka>/domy.geojson` (formát `reference/vystup.md`). Čáry k dnešním domům se
