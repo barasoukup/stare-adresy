@@ -26,8 +26,8 @@ parcela „st.“, 2 = pozemková), `katastralniuzemi`, `vymeraparcely`; Adresni
 | Řetová (745359) | CHR379018390 | 1839 | „Gross Ritte“ |
 | Vlčkov (783838) | CHR526018390 | 1839 | |
 | Hylváty (775339) | CHR139018390 | 1839 | |
-| Předměstí (734322) – i Dolní Lhota | CHR355018390 | 1839 | víc osad na jedné skice |
-| Svojanov (761141) | CHR470018390 | 1839 | |
+| Předměstí (734322) – i Dolní Lhota | CHR355018390 | 1839 | víc osad na jedné skice; Studenec („Studenetz“, st. 67 = dnes č.p. 6) kolem x 11700–12900, y −10700…−11700 |
+| Svojanov (761141) | CHR470018390 | 1839 | městečko („Markt Swojanow“) kolem x 10900–11800, y −14800…−15400; kotvy podle dnešních č.p. i st. parcel nesedí (chyba 35–370 m) – čísla i parcely nejspíš přečíslované |
 | Žamberk (794368) | HRA447018400 | 1840 | město na zvláštních listech („Stadt Senftenberg“, blok vlevo dole); dnešní st. parcely přečíslované. Souřadnice prohlížeče: kostel sv. Václava a Nádražní/Kostelní (č.p. 52–70) x 1700–2600, y −31700…−32300; Jiráskovo nám. (č.p. 250–273) x 3400–3900, y −29600…−30000; východní okraj u Tyršovy (č.p. 286–308) x 4700–5200, y −30300…−31000 |
 | Šestajovice u Prahy (762385) | KRM346018410 | 1841 | ves na rohu 4 listů |
 | Ostrov u Lanškrouna (715999) | CHR276018390 | 1839 | „Michelsdorf“ |
@@ -45,7 +45,7 @@ parcela „st.“, 2 = pozemková), `katastralniuzemi`, `vymeraparcely`; Adresni
 | Příčina (735825) | RAK273018410 | 1841 | |
 | Všesulov (787477) | RAK306018410 | 1841 | č.p. u budov nevepsána, parcely dnes přečíslované |
 | Petrovice u Rakovníka (719927) | RAK252018410 | 1841 | silně revidovaná |
-| Mělník (692816) | BOL308018420 | 1842 | i předměstí a osady Podolí, Okrouhlík, Rybáře, Chloumek |
+| Mělník (692816) | BOL308018420 | 1842 | i předměstí a osady Podolí, Okrouhlík, Rybáře, Chloumek; Chloumek a sv. Jan kolem x 9500–11500, y −6800…−8500 (vlastníci psaní „N° x v Glo.“); Podolí zatím nenalezeno |
 
 **Jiné cesty ke kódu (ověřeno 25. 10. 2026):** veřejný seznam kódů pro Čechy neexistuje. Kód (CHR/HRA/KRM… + číslo + rok)
 nejde odvodit – prostřední číslo neodpovídá abecedě ani signatuře; **kódy nezkoušej naslepo** (byl by to průzkum služby
