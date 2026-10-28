@@ -168,6 +168,8 @@ def urci(e):
             notes.append(f"přesnost {'kotev' if zdroj == 'kotvy' else 'otisku'} asi {e['presnost_m']} m")
         if e["dnes"]["stejne_cp"] and _precteno(e):
             e["jistota"] = "A"
+        elif e.get("dnesni_cp") == "neplati":
+            notes.append("dnešní č.p. je jiný dům (ověřeno) – nesrovnáváno")
         elif not e["dnes"]["stejne_cp"]:
             d = _porovnej(e, lat, lon, notes)
             if d is not None and d <= 30 and _precteno(e):

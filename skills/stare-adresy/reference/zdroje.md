@@ -45,7 +45,7 @@ parcela „st.“, 2 = pozemková), `katastralniuzemi`, `vymeraparcely`; Adresni
 | Příčina (735825) | RAK273018410 | 1841 | |
 | Všesulov (787477) | RAK306018410 | 1841 | č.p. u budov nevepsána, parcely dnes přečíslované |
 | Petrovice u Rakovníka (719927) | RAK252018410 | 1841 | silně revidovaná |
-| Mělník (692816) | BOL308018420 | 1842 | i předměstí a osady Podolí, Okrouhlík, Rybáře, Chloumek; Chloumek a sv. Jan kolem x 9500–11500, y −6800…−8500 (vlastníci psaní „N° x v Glo.“); Podolí zatím nenalezeno |
+| Mělník (692816) | BOL308018420 | 1842 | i předměstí a osady Podolí, Okrouhlík, Rybáře, Chloumek; Chloumek a sv. Jan kolem x 9500–11500, y −6800…−8500 (vlastníci psaní „N° x v Glo.“); Podolí („Podoll“, vlastní č.p., zahrady „N° x v Pod.“) podél silnice x 5200–6800, y −16000…−17400 (č.p. 52–56 x ≈ 5300, 61–66 x ≈ 5800–6000, 24–32 x ≈ 6200–6800); Okrouhlík („Okrauhlik“, ohrazená osada, č.p. 1–16) x 2500–3100, y −13900…−14500. St. parcely dnes přečíslované – kotvy: kostel sv. Jana na Chloumečku [10934, −7251.3] ↔ S-JTSK [−733069.8, −1012106], kostel Nejsv. Trojice na Chloumku [13751.8, −7945.1] ↔ [−732397.8, −1012352.5] (měřítko 0,247 m/j., natočení −6,3°; ověřeno ulicí Okrouhlík) |
 
 **Jiné cesty ke kódu (ověřeno 25. 10. 2026):** veřejný seznam kódů pro Čechy neexistuje. Kód (CHR/HRA/KRM… + číslo + rok)
 nejde odvodit – prostřední číslo neodpovídá abecedě ani signatuře; **kódy nezkoušej naslepo** (byl by to průzkum služby
