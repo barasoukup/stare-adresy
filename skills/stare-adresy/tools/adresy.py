@@ -250,6 +250,10 @@ def urci(e):
                         "hledej na skice v řadě sousedů: " + ", ".join(f"č.p. {s['cp']} (dnes {s['adresa']}, {s['par']})"
                                                                       for s in sous),
                         "prozatím střed sousedních starých domů → D"]
+                    roz = max(ruian.dist_m(a["lat"], a["lon"], b["lat"], b["lon"]) for a in sous for b in sous)
+                    if roz > 250:  # čísla tu nejdou v řadě (přidělována postupně po městě)
+                        e["zjisteni"].insert(-1, f"sousedé jsou od sebe {roz:.0f} m – čísla tu nejdou v souvislé řadě, "
+                                                 "projdi skicu systematicky (bod je jen orientační)")
                     return "; ".join(e["zjisteni"])
                 notes.append(f"dnešní dům stojí na {par} – ověř na skice, zda tam ~1840 stála budova se stejnou st. parcelou "
                              "(vysoké číslo st. parcely = spíš novější stavba)")

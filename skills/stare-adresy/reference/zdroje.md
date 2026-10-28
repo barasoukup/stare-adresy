@@ -19,7 +19,7 @@ parcela „st.“, 2 = pozemková), `katastralniuzemi`, `vymeraparcely`; Adresni
 |---|---|---|---|
 | Svinná u České Třebové (671703) | CHR473018390 | 1839 | |
 | Přívrat (736384) | CHR360018380 | 1838 | |
-| Česká Třebová (621757) | CHR490018390 | 1839 | město na zvláštních listech vlevo dole; okolí Nového náměstí (č.p. 168–176) v prohlížeči kolem x 3300–4800, y −32600…−33200 (dva listy, nepřekrývají se) |
+| Česká Třebová (621757) | CHR490018390 | 1839 | město na zvláštních listech vlevo dole; okolí Nového náměstí (č.p. 168–176) v prohlížeči kolem x 3300–4800, y −32600…−33200 (dva listy, nepřekrývají se); č.p. 89–95 na západní straně dnešního Tyršova nám. (st. 390–406) x 4100–4900, y −28400…−29700; sv. Kateřina / U Kostelíčka (č.p. 315 = st. 477) x 9700–10300, y −29400…−29800. Čísla po městě nejdou v řadě (314 u náměstí, 315 u sv. Kateřiny, 322 na Litomyšlské) |
 | Parník (621820) | CHR318018390 | 1839 | |
 | Kozlov u České Třebové (671690) | CHR210018390 | 1839 | ves na rohu listů |
 | Dlouhá Třebová (626503) | CHR226018390 | 1839 | otisk tu nenačítá |
