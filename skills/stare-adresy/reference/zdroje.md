@@ -52,6 +52,9 @@ nejde odvodit – prostřední číslo neodpovídá abecedě ani signatuře; **k
 mimo aplikaci). Signatura Národního archivu („<číslo>-1 <obec>“, řazeno abecedně podle německého jména obce) se hodí pro objednávku skenu u NA (`digi.nacr.cz/formis/formular.php?sign=<signatura>`),
 ne pro prohlížeč. Morava: veřejný seznam MZA podle písmen (`mza.cz/indikacniskici/skica/?letter=S`). Jinak jen
 vyhledání v aplikaci Archiv – při výpadku počkat (25. 10. 2026 trval výpadek vyhledávání asi 1–2 hodiny).
+Výpadek se pozná tak, že panel „Výsledky“ zůstane na „Chvilku strpení…“ a dotazy aplikace na `arcgis4/…/Archiv/klady/MapServer/*/query`
+vracejí `{"error":{"code":499,"message":"Token Required"}}` (aplikace je posílá bez tokenu; 28. 10. 2026 nepomohlo ani znovunačtení).
+Je to chyba na straně ČÚZK – **token nedoplňuj a službu neobcházej**, jen počkej a zkus to později.
 
 ## Pozdější zdroje pro novodobé adresy (ověřeno 27. 10. 2026)
 | Co | Kde | Poznámka |
