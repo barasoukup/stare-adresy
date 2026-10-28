@@ -18,14 +18,14 @@ parcela „st.“, 2 = pozemková), `katastralniuzemi`, `vymeraparcely`; Adresni
 | k.ú. (kód) | skica | rok | poznámka |
 |---|---|---|---|
 | Svinná u České Třebové (671703) | CHR473018390 | 1839 | |
-| Přívrat (736384) | CHR360018380 | 1838 | |
+| Přívrat (736384) | CHR360018380 | 1838 | ves podél potoka; st. 12 = č.p. 2 [10822.9, −8528], st. 36–39 = č.p. 6–9, st. 45 = 49 [11647, −9200.6], st. 31 = 52 [11837, −8821] (0,254 m/j., −5°) |
 | Česká Třebová (621757) | CHR490018390 | 1839 | město na zvláštních listech vlevo dole; okolí Nového náměstí (č.p. 168–176) v prohlížeči kolem x 3300–4800, y −32600…−33200 (dva listy, nepřekrývají se); č.p. 89–95 na západní straně dnešního Tyršova nám. (st. 390–406) x 4100–4900, y −28400…−29700; sv. Kateřina / U Kostelíčka (č.p. 315 = st. 477) x 9700–10300, y −29400…−29800. Čísla po městě nejdou v řadě (314 u náměstí, 315 u sv. Kateřiny, 322 na Litomyšlské) |
 | Parník (621820) | CHR318018390 | 1839 | č.p. se jen zčásti zachovala: st. 53 = č.p. 45, st. 50 = č.p. 75 jako dnes, ale v horní části (J. Pácla) st. 64 = č.p. 9 (dnes 632), st. 65 = č.p. 8 (dnes 83) – přečíslováno po 1839 |
 | Kozlov u České Třebové (671690) | CHR210018390 | 1839 | ves na rohu listů |
-| Dlouhá Třebová (626503) | CHR226018390 | 1839 | otisk tu nenačítá |
+| Dlouhá Třebová (626503) | CHR226018390 | 1839 | otisk tu nenačítá; st. parcely zachované (40 = č.p. 6, 75 = 134, 118 = 136, 140 = 100, 180 = 56, 186 = 52, 208 = 34); č.p. červeně v budově, zahrady „og N° x“; kotvy st. 40 [6239, −9296], 186 [6877.6, −12010.5], 75 [7740.8, −11278], 140 [9433.3, −14526.9], 118 [8705.2, −13435.7] (0,238 m/j., −8°); číslování roste od středu k severu (č.p. 20–24 na severním konci u Hylvát) |
 | Řetová (745359) | CHR379018390 | 1839 | „Gross Ritte“ |
 | Vlčkov (783838) | CHR526018390 | 1839 | |
-| Hylváty (775339) | CHR139018390 | 1839 | |
+| Hylváty (775339) | CHR139018390 | 1839 | č.p. červeně ve dvoře budovy, červená čísla na polích jsou parcely (vlastník „N° x“); st. 43 = č.p. 1, st. 45 = č.p. 2; v roce 1839 číslování nejméně do 115 (novější domky „N° 105“, „N° 110“ uprostřed vsi), na jižním konci nízká čísla (6–29) |
 | Předměstí (734322) – i Dolní Lhota | CHR355018390 | 1839 | víc osad na jedné skice; Studenec („Studenetz“, st. 67 = dnes č.p. 6) kolem x 11700–12900, y −10700…−11700 |
 | Svojanov (761141) | CHR470018390 | 1839 | městečko („Markt Swojanow“) kolem x 10900–11800, y −14800…−15400; kotvy podle dnešních č.p. i st. parcel nesedí (chyba 35–370 m) – čísla i parcely nejspíš přečíslované |
 | Žamberk (794368) | HRA447018400 | 1840 | město na zvláštních listech („Stadt Senftenberg“, blok vlevo dole); dnešní st. parcely přečíslované. Souřadnice prohlížeče: kostel sv. Václava a Nádražní/Kostelní (č.p. 52–70) x 1700–2600, y −31700…−32300; Jiráskovo nám. (č.p. 250–273) x 3400–3900, y −29600…−30000; východní okraj u Tyršovy (č.p. 286–308) x 4700–5200, y −30300…−31000 |
