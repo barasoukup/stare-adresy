@@ -79,7 +79,11 @@ Vstup: obec (jak je v matrice), č.p., rok zápisu, kdo tam žil. Ulož si ho hn
    - (u A se ukládá poloha dnešního adresního bodu domu; jinak střed parcely nebo bod z kotev / otisku),
    - parcela dnes neexistuje → poloha jen podle dnešního č.p. (**C**) s upozorněním → pokračuj krokem 5.
    U výsledku C nástroj řekne, na jaké parcele dnešní dům stojí: pozemková parcela (p.č.) = dům je mladší než katastr,
-   starý stál jinde; vysoké číslo st. parcely = spíš novější stavba.
+   starý stál jinde; vysoké číslo st. parcely = spíš novější stavba. **Novostavbu nástroj vyřadí sám:** stojí-li dnešní
+   dům na st. parcele výrazně vyšší (> 2× a o > 500) než aspoň dva číselní sousedé (č.p. ±1…±3), je to číslo zbořeného
+   domu přidělené znovu jinde – dnešní dům se nepoužije, bod je zatím uprostřed těch starých sousedů (**D**, metoda
+   `sousede`) a výpis je vyjmenuje. Starý dům pak hledej na skice v jejich řadě (č.p. jdou ve městě po ulicích) – ne
+   u dnešního domu. (Česká Třebová č.p. 93: dnes st. 1096 na Benešově, sousedé 91 a 95 na st. 404 a 390 u Tyršova nám.)
 5. **Když parcela nesedí nebo zanikla: císařský otisk.** V aplikaci Archiv zapni vrstvu „Císařské otisky“ (je napasovaná
    na dnešní mapu, čísla stavebních parcel na ní jsou stejná jako na skice), najdi tutéž budovu a přečti souřadnice
    S-JTSK (`reference/skicy.md`). **Vždy ověř přesnost kotvou:** přečti stejně i sousední budovu, jejíž stavební
@@ -107,7 +111,8 @@ Vstup: obec (jak je v matrice), č.p., rok zápisu, kdo tam žil. Ulož si ho hn
 
 ## Adresy po roce ~1880 (novodobé, `novodobe: true` ze `z_rodokmenu.py`)
 Skica je pro ně stará; dům ale často stál ještě v 1. polovině 20. století a pomohou pozdější zdroje:
-1. **Dnešní č.p.** (`ruian.py cp`) → zatím **C**. Ve městech s ulicemi zápis často uvádí i ulici („Nádražní ul.“).
+1. **Dnešní č.p.** (`ruian.py cp`) → zatím **C**, jen když dům není novostavba (viz krok 4 – vyřazená novostavba platí
+   i tady: hledej v řadě sousedů nebo v adresáři). Ve městech s ulicemi zápis často uvádí i ulici („Nádražní ul.“).
 2. **Adresář města** z doby kolem zápisu (Adressbuch, Adresář). Obsahuje (a) **seznam domů podle č.p.** po částech
    města s ulicí a majitelem a (b) **seznam ulic s čísly popisnými**. Ztotožnění ulice: vezmi z adresáře *ostatní* č.p.
    téže staré ulice a podívej se, kde dnes stojí (`ruian.py cp`) – stojí-li většina v jedné dnešní ulici, je to ona

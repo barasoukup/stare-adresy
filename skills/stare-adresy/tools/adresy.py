@@ -115,6 +115,41 @@ def _porovnej(e, lat, lon, notes):
     return d
 
 
+def _st_cislo(par):
+    """'st. 404/1' → 404; pozemková parcela / nic → None."""
+    if not par or not par.startswith("st. "):
+        return None
+    try:
+        return int(par[4:].split("/")[0])
+    except ValueError:
+        return None
+
+
+def _novostavba(ku, cp, par):
+    """Stojí dnešní dům s tímto č.p. na mnohem novější st. parcele než jeho číselní sousedé (č.p. ±1…±3)?
+
+    Ve městech dostávala novostavba často číslo dávno zbořeného domu – pak je dnešní dům úplně jinde.
+    Vrací {"min_st", "sousede": [staré domy sousedních č.p.]} nebo None.
+    """
+    n = _st_cislo(par)
+    if n is None:
+        return None
+    sous = []
+    for c in (cp - 1, cp + 1, cp - 2, cp + 2, cp - 3, cp + 3):
+        if c <= 0:
+            continue
+        for a in ruian.cp(ku, c)[:1]:
+            p = ruian.parcela_pod(a["lat"], a["lon"])
+            s = _st_cislo(p)
+            if s is not None:
+                sous.append({"cp": c, "adresa": a["adresa"].split(",")[0], "par": p, "st": s,
+                             "lat": a["lat"], "lon": a["lon"]})
+    stare = [s for s in sous if n > 2 * s["st"] and n - s["st"] > 500]
+    if len(stare) < 2:  # aspoň dva sousedé stojí na výrazně starší parcele
+        return None
+    return {"min_st": min(s["st"] for s in stare), "sousede": sorted(stare, key=lambda s: s["cp"])}
+
+
 def urci(e):
     """Doplní e['lat'], e['lon'], metoda, jistota, dnes, zjisteni. Vrací krátký popis."""
     cp, ku = e.get("cp"), e.get("ku_kod")
@@ -202,6 +237,20 @@ def urci(e):
                     notes.append(f"dnešní dům stojí na pozemkové parcele ({par}) – vznikl nejspíš až po stabilním katastru, "
                                  "starý dům stál jinde")
             elif par:
+                nov = _novostavba(ku, int(cp), par)
+                if nov:
+                    # Číslo staršího zbořeného domu dostala novostavba jinde – dnešní dům polohu neurčuje.
+                    sous = nov["sousede"]
+                    e.update(lat=sum(s["lat"] for s in sous) / len(sous), lon=sum(s["lon"] for s in sous) / len(sous),
+                             metoda="sousede", jistota="D")
+                    e["dnes"]["stejne_cp"] = False
+                    e["zjisteni"] = notes + [
+                        f"dnešní č.p. {cp} je NOVOSTAVBA ({par}, sousední staré domy stojí na st. {', '.join(str(x['st']) for x in sous)}) – "
+                        "starý dům stál jinde, dnešní č.p. nepoužito",
+                        "hledej na skice v řadě sousedů: " + ", ".join(f"č.p. {s['cp']} (dnes {s['adresa']}, {s['par']})"
+                                                                      for s in sous),
+                        "prozatím střed sousedních starých domů → D"]
+                    return "; ".join(e["zjisteni"])
                 notes.append(f"dnešní dům stojí na {par} – ověř na skice, zda tam ~1840 stála budova se stejnou st. parcelou "
                              "(vysoké číslo st. parcely = spíš novější stavba)")
             e["zjisteni"] = notes

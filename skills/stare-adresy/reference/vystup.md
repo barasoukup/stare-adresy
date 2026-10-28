@@ -13,7 +13,7 @@ Vlastnosti bodu (`properties`), chybějící hodnoty se vynechávají:
 | `rok` | rok zápisu v matrice (nejstarší) |
 | `osoby` | kdo tam žil (text) |
 | `jistota` | `A` jistá poloha · `B` podle skici, dnes jinak / č.p. nepřečteno · `C` jen dnešní č.p. · `D` jen obec |
-| `metoda` | `stp` stavební parcela, `otisk`, `kotvy`, `dnesni_cp`, `obec`, `ručně` |
+| `metoda` | `stp` stavební parcela, `otisk`, `kotvy`, `dnesni_cp`, `sousede` (dnešní dům je novostavba – střed starých číselných sousedů), `obec`, `ručně` |
 | `skica`, `skica_rok`, `skica_url` | kód indikační skici, rok, odkaz na prohlížeč (ČÚZK Archiv / MZA) |
 | `stp` | stavební parcela na skice |
 | `cteni` | upozornění na nejisté čtení |
