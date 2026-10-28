@@ -20,7 +20,7 @@ parcela „st.“, 2 = pozemková), `katastralniuzemi`, `vymeraparcely`; Adresni
 | Svinná u České Třebové (671703) | CHR473018390 | 1839 | |
 | Přívrat (736384) | CHR360018380 | 1838 | |
 | Česká Třebová (621757) | CHR490018390 | 1839 | město na zvláštních listech vlevo dole; okolí Nového náměstí (č.p. 168–176) v prohlížeči kolem x 3300–4800, y −32600…−33200 (dva listy, nepřekrývají se); č.p. 89–95 na západní straně dnešního Tyršova nám. (st. 390–406) x 4100–4900, y −28400…−29700; sv. Kateřina / U Kostelíčka (č.p. 315 = st. 477) x 9700–10300, y −29400…−29800. Čísla po městě nejdou v řadě (314 u náměstí, 315 u sv. Kateřiny, 322 na Litomyšlské) |
-| Parník (621820) | CHR318018390 | 1839 | |
+| Parník (621820) | CHR318018390 | 1839 | č.p. se jen zčásti zachovala: st. 53 = č.p. 45, st. 50 = č.p. 75 jako dnes, ale v horní části (J. Pácla) st. 64 = č.p. 9 (dnes 632), st. 65 = č.p. 8 (dnes 83) – přečíslováno po 1839 |
 | Kozlov u České Třebové (671690) | CHR210018390 | 1839 | ves na rohu listů |
 | Dlouhá Třebová (626503) | CHR226018390 | 1839 | otisk tu nenačítá |
 | Řetová (745359) | CHR379018390 | 1839 | „Gross Ritte“ |
@@ -49,6 +49,7 @@ parcela „st.“, 2 = pozemková), `katastralniuzemi`, `vymeraparcely`; Adresni
 | Bylany u Českého Brodu (653985) | KRM021018410 | 1841 | „Billan“; dnes bez st. parcel; západní řada č.p. 22–26 sedí s dneškem (26 = st. 4, 24 = st. 6), východní strana návsi přečíslovaná |
 | Lipany (683957) | KRM227018410 | 1841 | č.p. 9 = st. 12 (dnes st. 12/2) |
 | Brněnec (609927) | CHR026018390 | 1839 | je to skica Bělé nad Svitavou („Deutsch Biela“) – střední ze tří částí je „Böhmisch Brnenec / Brünnlitz“; st. parcely se zachovaly (213 = č.p. 11, 216 = č.p. 10, 219 = č.p. 3) |
+| Domažlice (630853) | KLA467018380 | 1838 | vnitřní město na zvláštním bloku listů dole („Stadt Taus“, větší měřítko); st. parcely se zachovaly (st. 170 = č.p. 51, st. 113 = č.p. 97, st. 115 = č.p. 96 Chodský hrad); vedlejší list vlevo je předměstí s vlastními č.p. |
 | Mělník (692816) | BOL308018420 | 1842 | i předměstí a osady Podolí, Okrouhlík, Rybáře, Chloumek; Chloumek a sv. Jan kolem x 9500–11500, y −6800…−8500 (vlastníci psaní „N° x v Glo.“); Podolí („Podoll“, vlastní č.p., zahrady „N° x v Pod.“) podél silnice x 5200–6800, y −16000…−17400 (č.p. 52–56 x ≈ 5300, 61–66 x ≈ 5800–6000, 24–32 x ≈ 6200–6800); Okrouhlík („Okrauhlik“, ohrazená osada, č.p. 1–16) x 2500–3100, y −13900…−14500. St. parcely dnes přečíslované – kotvy: kostel sv. Jana na Chloumečku [10934, −7251.3] ↔ S-JTSK [−733069.8, −1012106], kostel Nejsv. Trojice na Chloumku [13751.8, −7945.1] ↔ [−732397.8, −1012352.5] (měřítko 0,247 m/j., natočení −6,3°; ověřeno ulicí Okrouhlík) |
 
 **Jiné cesty ke kódu (ověřeno 25. 10. 2026):** veřejný seznam kódů pro Čechy neexistuje. Kód (CHR/HRA/KRM… + číslo + rok)

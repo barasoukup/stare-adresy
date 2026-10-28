@@ -10,6 +10,7 @@ Použití:
         sjtsk=… bod=kotvy                              (bod spočtený z kotev skici – kotvy.py)
         lat=49.89 lon=16.38 metoda=ručně              (ruční poloha)
         dnesni_cp=neplati                              (dnešní dům s tímto č.p. prokazatelně není ten starý)
+        cast="Město"                                   (část obce s vlastním číslováním, např. „č. 97 město“ v zápisu)
   adresy.py dopln <soubor.json> [--znovu]       dopočítá polohu všem adresám bez souřadnic (--znovu: všem)
   adresy.py vypis <soubor.json>                 přehled s jistotou
   adresy.py mapa <soubor.json> [mapa.html]      mapa (Leaflet) + GeoJSON vedle souboru
@@ -75,8 +76,9 @@ def _dnes(adresy, cp):
     return {"adresy": names, "stejne_cp": same}
 
 
-def _dnes_cp(ku, cp, obec):
-    """Dnešní adresní místo s č.p. v k.ú.; při více částech obce dá přednost té, která se jmenuje jako obec.
+def _dnes_cp(ku, cp, obec, cast=None):
+    """Dnešní adresní místo s č.p. v k.ú.; při více částech obce dá přednost zadané části (cast), jinak té,
+    která se jmenuje jako obec.
 
     Adresa části obce je „Část 6, 25722 Obec“, adresa hlavní části „č.p. 6, 25722 Obec“ – jméno obce je v obou
     (za PSČ), proto se rozhoduje podle začátku adresy: nejdřív „<obec> 6, …“, pak „č.p. 6, … <obec>“, pak ostatní."""
@@ -92,6 +94,9 @@ def _dnes_cp(ku, cp, obec):
                 return 1
             return 2
         dn.sort(key=poradi)
+    if cast:  # „Chodské náměstí 97, Město, 34401 Domažlice“ / „Město 97, 34401 …“
+        c = cast.lower()
+        dn.sort(key=lambda a: not any(k.strip().lower().startswith(c) for k in a["adresa"].split(",")[:2]))
     return dn
 
 
@@ -105,7 +110,7 @@ def _porovnej(e, lat, lon, notes):
     cp, ku = e.get("cp"), e.get("ku_kod")
     if not (cp and ku):
         return None
-    dn = _dnes_cp(ku, cp, e.get("obec"))
+    dn = _dnes_cp(ku, cp, e.get("obec"), e.get("cast"))
     if not dn:
         notes.append(f"dnes v k.ú. č.p. {cp} není")
         return None
@@ -213,11 +218,13 @@ def urci(e):
     if cp and ku and e.get("dnesni_cp") == "neplati":
         notes.append("dnešní č.p. je jiný dům (ověřeno) – nepoužito")
     elif cp and ku:
-        dn = _dnes_cp(ku, cp, e.get("obec"))
+        dn = _dnes_cp(ku, cp, e.get("obec"), e.get("cast"))
         if dn:
             e.update(lat=dn[0]["lat"], lon=dn[0]["lon"], metoda="dnesni_cp", jistota="C",
                      dnes={"adresy": [a["adresa"] for a in dn], "stejne_cp": True})
-            if len(dn) > 1:
+            if len(dn) > 1 and e.get("cast"):
+                notes.append(f"v k.ú. je víc adres s tímto č.p. – vybrána část „{e['cast']}“: {dn[0]['adresa']}")
+            elif len(dn) > 1:
                 jm = (e.get("obec") or "").split(" (")[0].lower()
                 zac = dn[0]["adresa"].split(",")[0].lower()
                 if jm and not zac.startswith(jm) and not zac.startswith("č.p."):

@@ -141,6 +141,8 @@ mimo ČR) do mapy nedávej – vypiš je uživateli k rozhodnutí.
 **Víc částí obce v jednom k.ú.** (ves + osady se stejnými č.p.): `dopln` vybírá adresu podle jména v poli `obec`
 („Osada 6, … Obec“ vs. „č.p. 6, … Obec“). Pojmenuj `obec` jako dnešní část obce; když nástroj napíše „NEJSPÍŠ JINÁ
 ČÁST OBCE“, dnešní č.p. patří jiné osadě – nepoužívej ho (`dnesni_cp=neplati`).
+Města s vlastním číslováním čtvrtí (Vnitřní Město, předměstí – např. Domažlice mají č.p. 97 pětkrát): přečti v zápisu,
+kterou část uvádí („č. 97 město“), a zadej ji `cast="Město"` – `dopln` pak vybere adresu „…, Město, …“.
 
 ## Co zapsat k adrese (`adresy.json`)
 `id, obec, cp, rok, osoby, ku_kod, skica, skica_rok, stp, skica_cp, cteni, sjtsk, bod, presnost_m, vyrez, poznamka`
