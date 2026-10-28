@@ -45,6 +45,10 @@ parcela „st.“, 2 = pozemková), `katastralniuzemi`, `vymeraparcely`; Adresni
 | Příčina (735825) | RAK273018410 | 1841 | |
 | Všesulov (787477) | RAK306018410 | 1841 | č.p. u budov nevepsána, parcely dnes přečíslované |
 | Petrovice u Rakovníka (719927) | RAK252018410 | 1841 | silně revidovaná |
+| Klučov (666645) | KRM154018410 | 1841 | ves na dvou listech (posunuté o ~20 m); dnes bez starých st. parcel – kotvy podle č.p. 3–7 (západní řada) a 10–12; č.p. 3 = st. 4, 7 = st. 10, 8 = st. 12 (zaniklé) |
+| Bylany u Českého Brodu (653985) | KRM021018410 | 1841 | „Billan“; dnes bez st. parcel; západní řada č.p. 22–26 sedí s dneškem (26 = st. 4, 24 = st. 6), východní strana návsi přečíslovaná |
+| Lipany (683957) | KRM227018410 | 1841 | č.p. 9 = st. 12 (dnes st. 12/2) |
+| Brněnec (609927) | CHR026018390 | 1839 | je to skica Bělé nad Svitavou („Deutsch Biela“) – střední ze tří částí je „Böhmisch Brnenec / Brünnlitz“; st. parcely se zachovaly (213 = č.p. 11, 216 = č.p. 10, 219 = č.p. 3) |
 | Mělník (692816) | BOL308018420 | 1842 | i předměstí a osady Podolí, Okrouhlík, Rybáře, Chloumek; Chloumek a sv. Jan kolem x 9500–11500, y −6800…−8500 (vlastníci psaní „N° x v Glo.“); Podolí („Podoll“, vlastní č.p., zahrady „N° x v Pod.“) podél silnice x 5200–6800, y −16000…−17400 (č.p. 52–56 x ≈ 5300, 61–66 x ≈ 5800–6000, 24–32 x ≈ 6200–6800); Okrouhlík („Okrauhlik“, ohrazená osada, č.p. 1–16) x 2500–3100, y −13900…−14500. St. parcely dnes přečíslované – kotvy: kostel sv. Jana na Chloumečku [10934, −7251.3] ↔ S-JTSK [−733069.8, −1012106], kostel Nejsv. Trojice na Chloumku [13751.8, −7945.1] ↔ [−732397.8, −1012352.5] (měřítko 0,247 m/j., natočení −6,3°; ověřeno ulicí Okrouhlík) |
 
 **Jiné cesty ke kódu (ověřeno 25. 10. 2026):** veřejný seznam kódů pro Čechy neexistuje. Kód (CHR/HRA/KRM… + číslo + rok)
@@ -54,7 +58,7 @@ ne pro prohlížeč. Morava: veřejný seznam MZA podle písmen (`mza.cz/indikac
 vyhledání v aplikaci Archiv – při výpadku počkat (25. 10. 2026 trval výpadek vyhledávání asi 1–2 hodiny).
 Výpadek se pozná tak, že panel „Výsledky“ zůstane na „Chvilku strpení…“ a dotazy aplikace na `arcgis4/…/Archiv/klady/MapServer/*/query`
 vracejí `{"error":{"code":499,"message":"Token Required"}}` (aplikace je posílá bez tokenu; 28. 10. 2026 nepomohlo ani znovunačtení).
-Je to chyba na straně ČÚZK – **token nedoplňuj a službu neobcházej**, jen počkej a zkus to později.
+Je to chyba na straně ČÚZK – **token nedoplňuj a službu neobcházej**, jen počkej a zkus to později. 28. 10. 2026 vyhledávání ve vestavěném prohlížeči aplikace dál vracelo 499, ale v uživatelově Chromu (Claude in Chrome) fungovalo – zkus jiný prohlížeč, prohlížeč skic (`openmap.html`) pak jde i ve vestavěném.
 
 ## Pozdější zdroje pro novodobé adresy (ověřeno 27. 10. 2026)
 | Co | Kde | Poznámka |
